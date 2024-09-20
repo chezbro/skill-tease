@@ -3,25 +3,160 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 0, 0, 0;
+  --background-end-rgb: 0, 0, 0;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+@layer components {
+
+  /* Pricing toggle switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+  }
+
+  input:checked + .slider {
+    background-color: #2196F3;
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(26px);
+  }
+
+  .slider.round {
+    border-radius: 34px;
+  }
+
+  .slider.round:before {
+    border-radius: 50%;
+  }
+
+  .blur-sm {
+    filter: blur(4px);
+    transition: filter 0.3s ease-out;
+  }
+
+  .expanded-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
+    opacity: 0;
+  }
+
+  .expanded-content.active {
+    max-height: 500px;
+    opacity: 1;
+  }
+
+  .course-curriculum-item {
+    @apply bg-gray-800 rounded-lg overflow-hidden transition-all duration-300 ease-in-out;
+  }
+
+  .course-curriculum-item:hover {
+    @apply bg-gray-700;
+  }
+
+  .course-info-card {
+    @apply bg-gray-800 p-4 rounded-lg transition-all duration-300 ease-in-out;
+  }
+
+  .course-info-card:hover {
+    @apply bg-gray-700;
+  }
+
+  .enroll-button {
+    @apply bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300;
+  }
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  
+  .shadow-neon-blue {
+    box-shadow: 0 0 5px theme('colors.blue.500'),
+                0 0 10px theme('colors.blue.500'),
+                0 0 15px theme('colors.blue.500'),
+                0 0 20px theme('colors.blue.500');
+  }
+  
+  .shadow-neon-purple {
+    box-shadow: 0 0 5px theme('colors.purple.500'),
+                0 0 10px theme('colors.purple.500'),
+                0 0 15px theme('colors.purple.500'),
+                0 0 20px theme('colors.purple.500');
+  }
+  
+  .shadow-neon-green {
+    box-shadow: 0 0 5px theme('colors.green.500'),
+                0 0 10px theme('colors.green.500'),
+                0 0 15px theme('colors.green.500'),
+                0 0 20px theme('colors.green.500');
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animation-delay-200 {
+    animation-delay: 200ms;
+  }
+
+  .animation-delay-400 {
+    animation-delay: 400ms;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

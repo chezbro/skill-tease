@@ -1,101 +1,186 @@
-import Image from "next/image";
+'use client'
+
+import { useState } from 'react'
+import Link from 'next/link'
+import HeroCarousel from '@/components/HeroCarousel'
+import { CheckCircle } from 'lucide-react'
+
+const categories = [
+  { name: 'Programming', icon: '💻' },
+  { name: 'Design', icon: '🎨' },
+  { name: 'Marketing', icon: '📈' },
+  { name: 'Music', icon: '🎵' },
+  { name: 'Language', icon: '🗣️' },
+  { name: 'Fitness', icon: '💪' },
+]
+
+const pricingTiers = [
+  {
+    name: "Basic",
+    price: 19,
+    features: [
+      "Access to 50+ courses",
+      "Basic AI tutor assistance",
+      "Mobile app access",
+      "Course completion certificates",
+    ],
+    color: "blue",
+  },
+  {
+    name: "Pro",
+    price: 39,
+    features: [
+      "Access to 200+ courses",
+      "Advanced AI tutor with personalized learning paths",
+      "Priority support",
+      "Offline course downloads",
+      "Exclusive webinars and workshops",
+    ],
+    color: "purple",
+    recommended: true,
+  },
+  {
+    name: "Enterprise",
+    price: 99,
+    features: [
+      "Unlimited access to all courses",
+      "Premium AI tutor with real-time adaptive learning",
+      "Dedicated account manager",
+      "Custom course creation",
+      "Team collaboration tools",
+      "Advanced analytics and reporting",
+    ],
+    color: "green",
+  },
+]
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [isAnnual, setIsAnnual] = useState(true)
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="min-h-screen">
+      <HeroCarousel />
+
+      {/* Categories Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold mb-12 text-center">Explore Categories</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+            {categories.map((category, index) => (
+              <Link 
+                key={category.name} 
+                href={`/courses?category=${category.name.toLowerCase()}`}
+                className="bg-gray-800 p-6 rounded-lg text-center transition duration-300 hover:bg-gray-700 hover:shadow-neon-purple animate-fade-in-up"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="text-4xl mb-2">{category.icon}</div>
+                <h3 className="text-xl font-semibold">{category.name}</h3>
+              </Link>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      {/* Featured Courses Section */}
+      <section className="py-20 px-4 bg-gray-900">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold mb-12 text-center">Featured Courses</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((course) => (
+              <div key={course} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-300 hover:shadow-neon-blue">
+                <img 
+                  src={`/hero-image-1.jpg`} 
+                  alt={`Course ${course}`}
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-6">
+                  <h3 className="text-xl font-semibold mb-2">Course Title {course}</h3>
+                  <p className="text-gray-400 mb-4">Brief description of the course goes here.</p>
+                  <Link 
+                    href={`/courses/${course}`} 
+                    className="text-blue-400 hover:text-blue-300 font-semibold"
+                  >
+                    Learn More →
+                  </Link>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing Section */}
+      <section id="pricing" className="py-20 px-4">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-4">Pricing Plans</h2>
+          <p className="text-xl text-center text-gray-300 mb-12">
+            Choose the plan that fits your learning journey
+          </p>
+
+          {/* Pricing toggle */}
+          <div className="flex justify-center items-center mb-12">
+            <span className={`mr-3 ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>Monthly</span>
+            <label className="switch">
+              <input type="checkbox" checked={isAnnual} onChange={() => setIsAnnual(!isAnnual)} />
+              <span className="slider round"></span>
+            </label>
+            <span className={`ml-3 ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
+              Annual <span className="text-green-500 font-semibold">(Save 20%)</span>
+            </span>
+          </div>
+
+          {/* Pricing tiers */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {pricingTiers.map((tier, index) => (
+              <div 
+                key={tier.name}
+                className={`bg-gray-800 rounded-lg p-8 shadow-lg transition-all duration-300 transform hover:-translate-y-2 ${
+                  tier.recommended ? 'ring-2 ring-purple-500' : ''
+                }`}
+              >
+                {tier.recommended && (
+                  <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block">
+                    Recommended
+                  </span>
+                )}
+                <h3 className="text-2xl font-bold mb-4">{tier.name}</h3>
+                <p className="text-4xl font-bold mb-6">
+                  ${isAnnual ? tier.price * 10 : tier.price}
+                  <span className="text-gray-400 text-lg font-normal">/{isAnnual ? 'year' : 'month'}</span>
+                </p>
+                <ul className="mb-8 space-y-3">
+                  {tier.features.map((feature, index) => (
+                    <li key={index} className="flex items-center">
+                      <CheckCircle className={`mr-2 h-5 w-5 text-${tier.color}-500`} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+                <Link 
+                  href="/signup" 
+                  className={`block w-full text-center bg-${tier.color}-600 hover:bg-${tier.color}-700 text-white font-bold py-3 px-4 rounded transition duration-300 hover:shadow-neon-${tier.color}`}
+                >
+                  Get Started
+                </Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action */}
+      <section className="py-20 px-4 bg-gray-900">
+        <div className="container mx-auto text-center">
+          <h2 className="text-4xl font-bold mb-6">Ready to Start Learning?</h2>
+          <p className="text-xl mb-8">Join thousands of students already learning on our platform</p>
+          <Link 
+            href="/signup" 
+            className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:shadow-neon-green"
+          >
+            Sign Up Now
+          </Link>
+        </div>
+      </section>
     </div>
-  );
+  )
 }
