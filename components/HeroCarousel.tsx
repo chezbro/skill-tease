@@ -1,93 +1,122 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const images = [
-  '/hero-image-1.jpg',
-  '/hero-image-2.jpg',
-  '/hero-image-3.jpg',
-  // Add more image paths as needed
+type CarouselItem = {
+  type: 'image' | 'video';
+  src: string;
+  alt?: string;
+}
+
+const carouselItems: CarouselItem[] = [
+  { type: 'video', src: '/hero-video.mp4' },
+  { type: 'image', src: '/hero-image-1.jpg', alt: 'Hero Image 1' },
+  { type: 'image', src: '/hero-image-3.jpg', alt: 'Hero Image 2' },
+  // Add more items as needed
 ]
 
 export default function HeroCarousel() {
-  const [currentImage, setCurrentImage] = useState(0)
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+  const [currentItem, setCurrentItem] = useState(0)
+  const [isPlaying, setIsPlaying] = useState(true)
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([])
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentImage((prevImage) => (prevImage + 1) % images.length)
-    }, 5000) // Change image every 5 seconds
+      if (isPlaying) {
+        setCurrentItem((prevItem) => (prevItem + 1) % carouselItems.length)
+      }
+    }, 5000) // Change item every 5 seconds
 
     return () => clearInterval(timer)
-  }, [])
+  }, [isPlaying])
 
-  const goToImage = (index: number) => {
-    setCurrentImage(index)
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (video) {
+        if (index === currentItem) {
+          video.play().catch(error => console.error('Error playing video:', error))
+        } else {
+          video.pause()
+          video.currentTime = 0
+        }
+      }
+    })
+  }, [currentItem])
+
+  const goToItem = (index: number) => {
+    setCurrentItem(index)
   }
 
-  const goToPrevious = () => {
-    setCurrentImage((prevImage) => (prevImage - 1 + images.length) % images.length)
-  }
-
-  const goToNext = () => {
-    setCurrentImage((prevImage) => (prevImage + 1) % images.length)
+  const togglePlayPause = () => {
+    setIsPlaying(!isPlaying)
+    const currentVideo = videoRefs.current[currentItem]
+    if (currentVideo) {
+      isPlaying ? currentVideo.pause() : currentVideo.play()
+    }
   }
 
   return (
-    <div className="relative h-[100vh] flex items-center justify-center overflow-hidden">
-      {images.map((src, index) => (
+    <div className="relative h-[70vh] flex items-center justify-center overflow-hidden">
+      {carouselItems.map((item, index) => (
         <div
-          key={src}
+          key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentImage ? 'opacity-100' : 'opacity-0'
+            index === currentItem ? 'opacity-100' : 'opacity-0'
           }`}
-          style={{
-            transform: `translateY(${scrollY * 0.5}px)`,
-            transition: 'transform 0.5s ease-out',
-          }}
         >
-          <Image
-            src={src}
-            alt={`Hero Image ${index + 1}`}
-            layout="fill"
-            objectFit="cover"
-            objectPosition="center 70%"
-            className="brightness-50"
-          />
+          {item.type === 'image' ? (
+            <Image
+              src={item.src}
+              alt={item.alt || ''}
+              layout="fill"
+              objectFit="cover"
+              className="brightness-50"
+            />
+          ) : (
+            <video
+              ref={el => videoRefs.current[index] = el}
+              src={item.src}
+              className="absolute inset-0 w-full h-full object-cover brightness-50"
+              muted
+              loop
+              playsInline
+            />
+          )}
         </div>
       ))}
-      <div className="relative z-10 text-center" style={{ transform: `translateY(${scrollY * 0.2}px)` }}>
-        <h1 className="text-5xl font-bold mb-4">Where Learning Gets Uncovered</h1>
-        <p className="text-xl text-gray-300 mb-8">AI tutors that reveal more as you master new subjects</p>
-        <Link href="/courses" className="bg-transparent border-2 border-blue-500 text-blue-500 px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-500 hover:text-white transition duration-300 hover:shadow-neon-blue">
+      <div className="relative z-10 text-center px-4">
+        <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
+          Where Learning Gets Uncovered
+        </h1>
+        <p className="text-xl md:text-2xl mb-8 text-gray-200">
+          AI tutors that reveal more as you master new subjects
+        </p>
+        <Link 
+          href="/courses" 
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:shadow-neon-blue"
+        >
           Explore Courses
         </Link>
       </div>
-      <button onClick={goToPrevious} className="absolute left-4 top-1/2 transform -translate-y-1/2 carousel-nav-button">
-        &#8249;
-      </button>
-      <button onClick={goToNext} className="absolute right-4 top-1/2 transform -translate-y-1/2 carousel-nav-button">
-        &#8250;
-      </button>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {images.map((_, index) => (
+        {carouselItems.map((_, index) => (
           <button
             key={index}
-            onClick={() => goToImage(index)}
-            className={`carousel-indicator ${
-              index === currentImage ? 'carousel-indicator-active' : ''
-            }`}
+            onClick={() => goToItem(index)}
+            className={`w-3 h-3 rounded-full ${
+              index === currentItem ? 'bg-blue-500' : 'bg-gray-400'
+            } hover:bg-blue-300 transition duration-300`}
           />
         ))}
       </div>
+      <button
+        onClick={togglePlayPause}
+        className="absolute bottom-4 right-4 text-white hover:text-blue-300 transition duration-300"
+      >
+        {isPlaying ? 'Pause' : 'Play'}
+      </button>
     </div>
   )
 }

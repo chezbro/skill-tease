@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { PlayCircle } from 'lucide-react'
@@ -15,7 +15,7 @@ const mockCourseData = {
   level: "Advanced",
   rating: 4.8,
   enrolledStudents: 1234,
-  heroImage: "/course-hero.jpg",
+  heroImage: "/hero-image-1.jpg",
   videoUrl: "/course-preview.mp4",
   curriculum: [
     {
@@ -41,6 +41,7 @@ export default function CourseDetailPage() {
   const { id } = useParams()
   const [activeModule, setActiveModule] = useState(0)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [videoError, setVideoError] = useState<string | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
 
   // In a real app, you'd fetch the course data based on the id
@@ -48,10 +49,22 @@ export default function CourseDetailPage() {
 
   const playVideo = () => {
     if (videoRef.current) {
-      videoRef.current.play()
+      videoRef.current.play().catch(e => {
+        console.error("Error playing video:", e)
+        setVideoError(e.message)
+      })
       setIsVideoPlaying(true)
     }
   }
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.addEventListener('error', (e) => {
+        console.error("Video error:", e)
+        setVideoError("Error loading video. Please try again later.")
+      })
+    }
+  }, [])
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -60,7 +73,7 @@ export default function CourseDetailPage() {
         {!isVideoPlaying ? (
           <>
             <Image
-              src={'/hero-image-1.jpg'}
+              src={course.heroImage}
               alt={course.title}
               layout="fill"
               objectFit="cover"
@@ -81,7 +94,17 @@ export default function CourseDetailPage() {
             className="w-full h-full object-cover"
             src={course.videoUrl}
             controls
-          />
+            playsInline
+            onPlay={() => setIsVideoPlaying(true)}
+            onPause={() => setIsVideoPlaying(false)}
+          >
+            Your browser does not support the video tag.
+          </video>
+        )}
+        {videoError && (
+          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-75">
+            <p className="text-white text-xl">{videoError}</p>
+          </div>
         )}
       </div>
 
