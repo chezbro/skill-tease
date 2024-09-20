@@ -11,9 +11,9 @@ type CarouselItem = {
 }
 
 const carouselItems: CarouselItem[] = [
-  { type: 'video', src: '/hero-video.mp4' },
   { type: 'image', src: '/hero-image-1.jpg', alt: 'Hero Image 1' },
-  { type: 'image', src: '/hero-image-3.jpg', alt: 'Hero Image 2' },
+  { type: 'video', src: '/hero-video.mp4' },
+  { type: 'video', src: '/hero-video-2.mp4' },
   // Add more items as needed
 ]
 

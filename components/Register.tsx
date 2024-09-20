@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-export default function Register() {
+export default function Register({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -13,6 +13,7 @@ export default function Register() {
       const { error } = await supabase.auth.signUp({ email, password })
       if (error) throw error
       alert('Check your email for the confirmation link!')
+      onClose()
     } catch (error) {
       alert(error.message)
     }
@@ -35,7 +36,11 @@ export default function Register() {
         className="w-full p-2 border rounded text-black"
       />
       <button type="submit" className="w-full p-2 bg-green-500 text-white rounded hover:bg-green-600">
-        Register
+
+      Register
+      </button>
+      <button type="button" onClick={onClose} className="w-full p-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+        Cancel
       </button>
     </form>
   )

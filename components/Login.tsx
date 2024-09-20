@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { supabase } from '@/lib/supabase'
 
-export default function Login() {
+export default function Login({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -12,7 +12,7 @@ export default function Login() {
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password })
       if (error) throw error
-      // Redirect or update UI upon successful login
+      onClose()
     } catch (error) {
       alert(error.message)
     }
@@ -36,6 +36,9 @@ export default function Login() {
       />
       <button type="submit" className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600">
         Log In
+      </button>
+      <button type="button" onClick={onClose} className="w-full p-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400">
+        Cancel
       </button>
     </form>
   )
