@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import HeroCarousel from '@/components/HeroCarousel'
@@ -67,42 +67,28 @@ const pricingTiers = [
 export default function Home() {
   const [isAnnual, setIsAnnual] = useState(true)
   const [expandedReview, setExpandedReview] = useState<number | null>(null)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  const handleMouseEnter = () => {
+    setIsVideoPlaying(true)
+    videoRef.current?.play()
+  }
+
+  const handleMouseLeave = () => {
+    setIsVideoPlaying(false)
+    videoRef.current?.pause()
+  }
 
   return (
     <div className="min-h-screen">
       <HeroCarousel />
 
-      {/* Full-width banner with 3 hero images */}
-      <section className="w-full h-screen flex">
-        {[1, 2, 3].map((index) => (
-          <motion.div 
-            key={index} 
-            className="w-1/3 relative overflow-hidden group"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: index * 0.2 }}
-          >
-            <Image
-              src={`/hero-image-${index}.jpg`}
-              alt={`Hero ${index}`}
-              layout="fill"
-              objectFit="cover"
-              className="transition-transform duration-300 group-hover:scale-110"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-              <h3 className="text-white text-4xl font-bold text-center px-4">
-                {index === 1 ? "Learn" : index === 2 ? "Grow" : "Succeed"}
-              </h3>
-            </div>
-          </motion.div>
-        ))}
-      </section>
-
       {/* Course Categories Banner */}
-      <section className="py-24 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900 min-h-screen flex items-center">
+      <section className="py-24 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-5xl font-bold mb-16 text-center text-white"
+            className="text-6xl font-bold mb-16 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -110,24 +96,23 @@ export default function Home() {
             Explore Our Tantalizing Courses
           </motion.h2>
           <div className="flex justify-center">
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 max-w-4xl">
+            <div className="grid grid-cols-6 gap-8 max-w-6xl">
               {categories.map((category, index) => (
                 <motion.div 
                   key={index} 
-                  className="bg-gray-800 rounded-lg p-8 text-center transition-all duration-300 hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-purple-500/30"
+                  className="bg-gray-800 rounded-lg p-6 text-center transition-all duration-300 hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-purple-500/30"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-6xl mb-4">{category.icon}</div>
-                  <h3 className="text-2xl font-semibold mb-4">{category.name}</h3>
-                  <p className="text-gray-400">Discover the secrets of {category.name.toLowerCase()} with our expert-led courses.</p>
+                  <div className="text-4xl mb-3">{category.icon}</div>
+                  <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
                   <motion.button 
-                    className="mt-4 text-purple-400 hover:text-purple-300 transition-colors duration-300"
+                    className="mt-2 text-purple-400 hover:text-purple-300 transition-colors duration-300"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Explore Courses <ArrowRight className="inline-block ml-1" />
+                    Explore
                   </motion.button>
                 </motion.div>
               ))}
@@ -137,10 +122,10 @@ export default function Home() {
       </section>
 
       {/* How it works section */}
-      <section className="py-24 px-4 bg-gray-900 min-h-screen flex items-center">
+      <section className="py-32 px-4 bg-gray-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-5xl font-bold mb-16 text-center"
+            className="text-6xl font-bold mb-20 text-center"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -155,14 +140,14 @@ export default function Home() {
             ].map((item, index) => (
               <motion.div 
                 key={index} 
-                className="text-center relative"
+                className="text-center relative p-8 bg-gray-800 rounded-lg shadow-lg"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-b from-purple-600 to-transparent opacity-10 rounded-lg" />
-                <div className="relative z-10 p-8">
-                  <item.icon className="w-16 h-16 mx-auto mb-6 text-purple-400" />
+                <div className="relative z-10">
+                  <item.icon className="w-20 h-20 mx-auto mb-6 text-purple-400" />
                   <h3 className="text-3xl font-semibold mb-4">{item.title}</h3>
                   <p className="text-gray-300 text-lg mb-6">{item.description}</p>
                   <motion.button 
@@ -180,10 +165,10 @@ export default function Home() {
       </section>
 
       {/* Testimonials section */}
-      <section className="py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-gray-900 to-purple-900">
+      <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-5xl font-bold mb-16 text-center"
+            className="text-6xl font-bold mb-20 text-center"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -266,18 +251,29 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
           >
-            <div className="relative h-96">
+            <div 
+              className="relative h-96"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
               <Image 
-                src="https://picsum.photos/seed/lesson/800/600" 
+                src="/hero-image-1.jpg" 
                 alt="Lesson Preview" 
                 layout="fill" 
                 objectFit="cover" 
-                className="brightness-75"
+                className={`brightness-75 transition-opacity duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
                 unoptimized
+              />
+              <video
+                ref={videoRef}
+                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
+                src="/hero-video-3.mp4"
+                muted
+                playsInline
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.button 
-                  className="bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-colors duration-300"
+                  className={`bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-all duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                 >
@@ -285,23 +281,7 @@ export default function Home() {
                 </motion.button>
               </div>
             </div>
-            <div className="p-8">
-              <h3 className="text-3xl font-semibold mb-4">The Art of Seductive Coding</h3>
-              <p className="text-gray-300 mb-6">Uncover the secrets of writing code that's impossible to resist. Learn how to create functions so smooth, they'll make other developers blush.</p>
-              <div className="flex justify-between items-center">
-                <div>
-                  <p className="text-purple-400 mb-2">Course Highlights:</p>
-                  <ul className="list-disc list-inside text-gray-300">
-                    <li>Master the art of clean, elegant code</li>
-                    <li>Learn seductive design patterns</li>
-                    <li>Craft irresistible user interfaces</li>
-                  </ul>
-                </div>
-                <GradientButton href="/courses/seductive-coding">
-                  Unveil the Full Lesson
-                </GradientButton>
-              </div>
-            </div>
+            {/* ... rest of the section content ... */}
           </motion.div>
         </div>
       </section>

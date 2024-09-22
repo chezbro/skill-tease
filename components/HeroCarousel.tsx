@@ -11,9 +11,9 @@ type CarouselItem = {
 }
 
 const carouselItems: CarouselItem[] = [
-  { type: 'image', src: '/hero-image-1.jpg', alt: 'Hero Image 1' },
-  { type: 'video', src: '/hero-video.mp4' },
-  { type: 'video', src: '/hero-video-2.mp4' },
+  // { type: 'image', src: '/hero-image-1.jpg', alt: 'Hero Image 1' },
+  { type: 'video', src: '/hero-video-3.mp4' },
+  // { type: 'video', src: '/hero-video-2.mp4' },
   // Add more items as needed
 ]
 
@@ -58,7 +58,7 @@ export default function HeroCarousel() {
   }
 
   return (
-    <div className="relative h-[70vh] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-screen flex items-center justify-center overflow-hidden">
       {carouselItems.map((item, index) => (
         <div
           key={index}
@@ -94,10 +94,11 @@ export default function HeroCarousel() {
           AI tutors that reveal more as you master new subjects
         </p>
         <Link 
-          href="/courses" 
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full text-lg transition duration-300 hover:shadow-neon-blue"
+          href="/register" 
+          className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-3 px-8 text-lg transition-all duration-300 relative overflow-hidden group"
         >
-          Explore Courses
+          <span className="relative z-10">Sign Up</span>
+          <div className="absolute inset-0 h-full w-full bg-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
         </Link>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
