@@ -49,15 +49,22 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} bg-black text-white`}>
         <div className={showLogin || showRegister ? 'blur-sm' : ''}>
-          <header className="border-b border-gray-800 py-4">
+        <header className="border-b border-gray-800 py-4">
             <nav className="container mx-auto px-4 flex justify-between items-center">
               <Link href="/" className="text-2xl font-bold hover:text-blue-500 transition duration-300">Stripteach</Link>
-              <div className="space-x-4">
-                <Link href="/courses" className="hover:text-blue-500 transition duration-300">Courses</Link>
+              <div className="space-x-4 flex items-center">
                 {!session ? (
                   <>
-                    <button onClick={toggleLogin} className="hover:text-green-500 transition duration-300">Login</button>
-                    <Link href="/#pricing" className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded transition duration-300 hover:shadow-neon-blue">Sign Up</Link>
+                    <button onClick={toggleLogin} className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-green-400 to-blue-600 group-hover:from-green-400 group-hover:to-blue-600 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800">
+                      <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-black dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        Login
+                      </span>
+                    </button>
+                    <Link href="/#pricing" className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                      <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-black dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                        Sign Up
+                      </span>
+                    </Link>
                   </>
                 ) : (
                   <button onClick={handleLogout} className="hover:text-red-500 transition duration-300">Logout</button>

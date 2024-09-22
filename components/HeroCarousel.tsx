@@ -91,7 +91,7 @@ export default function HeroCarousel() {
           Where Learning Gets Uncovered
         </h1>
         <p className="text-xl md:text-2xl mb-8 text-gray-200">
-          AI tutors that reveal more as you master new subjects
+          Tutors that reveal more as you master new subjects
         </p>
         <Link 
           href="/register" 
