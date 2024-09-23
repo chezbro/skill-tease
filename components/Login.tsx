@@ -14,11 +14,7 @@ export default function Login({ onClose }: { onClose: () => void }) {
       if (error) throw error
       onClose()
     } catch (error) {
-      if (error instanceof Error) {
-        alert(error.message)
-      } else {
-        alert('An unknown error occurred')
-      }
+      alert(error instanceof Error ? error.message : 'An unexpected error occurred')
     }
   }
 

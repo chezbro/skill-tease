@@ -15,7 +15,7 @@ export default function Register({ onClose }: { onClose: () => void }) {
       alert('Check your email for the confirmation link!')
       onClose()
     } catch (error) {
-      alert(error.message)
+      alert(error instanceof Error ? error.message : 'An unexpected error occurred')
     }
   }
 
