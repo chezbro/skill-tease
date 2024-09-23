@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { Session } from '@supabase/supabase-js'  // Add this import
 import Link from 'next/link'
 import { Inter } from "next/font/google"
 import { supabase } from '@/lib/supabase'
@@ -15,7 +16,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [session, setSession] = useState(null)
+  const [session, setSession] = useState<Session | null>(null)  // Update this line
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
 
