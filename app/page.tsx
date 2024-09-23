@@ -284,7 +284,7 @@ export default function Home() {
       <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center"
+            className="text-6xl font-bold mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -293,56 +293,69 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {[
-              { name: "Jane D.", quote: "Stripteach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. Stripteach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
-              { name: "John S.", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, Stripteach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
-              { name: "Emily R.", quote: "Stripteach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "Stripteach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the AI tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
+              { name: "Jane D.", role: "Web Developer", quote: "Stripteach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. Stripteach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
+              { name: "John S.", role: "Data Scientist", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, Stripteach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
+              { name: "Emily R.", role: "UX Designer", quote: "Stripteach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "Stripteach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the AI tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
             ].map((testimonial, index) => (
               <motion.div 
                 key={index} 
-                className={`bg-gray-800 p-8 rounded-lg shadow-lg cursor-pointer transition-all duration-300 ${expandedReview === index ? 'col-span-3' : ''}`}
+                className={`bg-gray-800 rounded-lg overflow-hidden shadow-2xl transition-all duration-300 ${
+                  expandedReview === index ? 'col-span-3' : ''
+                }`}
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                onClick={() => setExpandedReview(expandedReview === index ? null : index)}
               >
-                <AnimatePresence>
-                  {expandedReview === index ? (
-                    <motion.p 
-                      className="mb-6 text-lg"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      "{testimonial.longQuote}"
-                    </motion.p>
-                  ) : (
-                    <motion.p 
-                      className="mb-6 text-lg"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                    >
-                      "{testimonial.quote}"
-                    </motion.p>
-                  )}
-                </AnimatePresence>
-                <div className="flex items-center">
+                <div className="relative h-48">
                   <Image 
-                    src={`https://picsum.photos/seed/${index}/40/40`} 
-                    alt={`Student ${index + 1}`} 
-                    width={40} 
-                    height={40} 
-                    className="rounded-full mr-4"
-                    unoptimized
+                    src={`/hero-image.jpg`} 
+                    alt="Testimonial background" 
+                    layout="fill" 
+                    objectFit="cover" 
+                    className="brightness-50"
                   />
-                  <div>
-                    <p className="font-semibold">{testimonial.name}</p>
-                    <div className="flex">
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image 
+                      src={`https://picsum.photos/seed/${index}/120/120`} 
+                      alt={`${testimonial.name}`} 
+                      width={120} 
+                      height={120} 
+                      className="rounded-full border-4 border-purple-500"
+                      unoptimized
+                    />
+                  </div>
+                </div>
+                <div className="p-8">
+                  <div className="text-center mb-6">
+                    <p className="font-semibold text-2xl text-white">{testimonial.name}</p>
+                    <p className="text-purple-400">{testimonial.role}</p>
+                    <div className="flex justify-center mt-2">
                       {[...Array(5)].map((_, i) => (
                         <StarIcon key={i} />
                       ))}
                     </div>
                   </div>
+                  <AnimatePresence>
+                    {expandedReview === index ? (
+                      <motion.p 
+                        className="text-gray-300 text-lg leading-relaxed"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto' }}
+                        exit={{ opacity: 0, height: 0 }}
+                      >
+                        "{testimonial.longQuote}"
+                      </motion.p>
+                    ) : (
+                      <motion.p 
+                        className="text-gray-300 text-lg leading-relaxed"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                      >
+                        "{testimonial.quote}"
+                      </motion.p>
+                    )}
+                  </AnimatePresence>
                 </div>
               </motion.div>
             ))}
