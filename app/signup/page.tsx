@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 import Register from '@/components/Register'
 import HeroCarousel from '@/components/HeroCarousel'
