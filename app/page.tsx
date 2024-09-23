@@ -97,24 +97,38 @@ export default function Home() {
             Explore Our Tantalizing Courses
           </motion.h2>
           <div className="flex justify-center">
-            <div className="grid grid-cols-6 gap-8 max-w-6xl">
+            <div className="flex gap-8 overflow-x-auto pb-8 max-w-full">
               {categories.map((category, index) => (
                 <motion.div 
                   key={index} 
-                  className="bg-gray-800 rounded-lg p-6 text-center transition-all duration-300 hover:scale-105 cursor-pointer hover:shadow-lg hover:shadow-purple-500/30"
+                  className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl flex-shrink-0 w-80"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-4xl mb-3">{category.icon}</div>
-                  <h3 className="text-lg font-semibold mb-2">{category.name}</h3>
-                  <motion.button 
-                    className="mt-2 text-purple-400 hover:text-purple-300 transition-colors duration-300"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Explore
-                  </motion.button>
+                  <div className="relative h-48">
+                    <Image 
+                      src={`/hero-image.jpg`} 
+                      alt={category.name} 
+                      layout="fill" 
+                      objectFit="cover" 
+                      className="brightness-75"
+                    />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <div className="text-6xl">{category.icon}</div>
+                    </div>
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-2xl font-semibold mb-4">{category.name}</h3>
+                    <p className="text-gray-300 mb-6">Discover the secrets of {category.name.toLowerCase()} with our expert-led courses.</p>
+                    <motion.button 
+                      className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 w-full"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Explore Courses
+                    </motion.button>
+                  </div>
                 </motion.div>
               ))}
             </div>
@@ -156,9 +170,10 @@ export default function Home() {
                 <video
                   ref={videoRef}
                   className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
-                  src="/course-preview.mp4"
+                  src="/hero-video-3.mp4"
                   muted
                   playsInline
+                  loop
                 />
                 <div className="absolute inset-0 flex items-center justify-center">
                   <motion.button 
@@ -371,6 +386,7 @@ export default function Home() {
                 src="/hero-video-3.mp4"
                 muted
                 playsInline
+                loop
               />
               <div className="absolute inset-0 flex items-center justify-center">
                 <motion.button 
