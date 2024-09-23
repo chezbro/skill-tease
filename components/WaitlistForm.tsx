@@ -21,6 +21,17 @@ export default function WaitlistForm() {
     setError(null)
 
     try {
+      // Check if email already exists
+      const { data: existingEmails } = await supabase
+        .from('waitlist')
+        .select('email')
+        .eq('email', email)
+      
+      if (existingEmails && existingEmails.length > 0) {
+        setError('This email is already on the waitlist.')
+        return
+      }
+
       const { error } = await supabase
         .from('waitlist')
         .insert({ email })
@@ -29,7 +40,11 @@ export default function WaitlistForm() {
 
       setSuccess(true)
     } catch (err) {
-      setError('An error occurred. Please try again.')
+      if (err instanceof Error) {
+        setError(err.message)
+      } else {
+        setError('An unexpected error occurred. Please try again.')
+      }
       console.error('Error:', err)
     } finally {
       setIsSubmitting(false)
