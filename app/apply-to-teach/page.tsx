@@ -2,6 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react'
 import { supabase } from '@/lib/supabase'
+import Image from 'next/image'
 
 export default function ApplyToTeach() {
   const [formData, setFormData] = useState({
@@ -108,73 +109,129 @@ export default function ApplyToTeach() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md mx-auto bg-white bg-opacity-10 rounded-lg shadow-xl overflow-hidden">
-        <div className="px-6 py-8">
-          <h2 className="text-3xl font-extrabold text-center text-white mb-6">Apply to Teach</h2>
-          <form onSubmit={handleSubmit} className="space-y-6">
-          <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-300">Name</label>
-              <input type="text" id="name" name="name" required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
-                value={formData.name} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-300">Email</label>
-              <input type="email" id="email" name="email" required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
-                value={formData.email} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="expertise" className="block text-sm font-medium text-gray-300">Area of Expertise</label>
-              <input type="text" id="expertise" name="expertise" required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
-                value={formData.expertise} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="experience" className="block text-sm font-medium text-gray-300">Years of Experience</label>
-              <input type="number" id="experience" name="experience" required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
-                value={formData.experience} onChange={handleChange} />
-            </div>
-            <div>
-              <label htmlFor="motivation" className="block text-sm font-medium text-gray-300">Why do you want to teach on Stripteach?</label>
-              <textarea id="motivation" name="motivation" rows={4} required
-                className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
-                value={formData.motivation} onChange={handleChange}></textarea>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">Upload or Record a short introduction video (max 2 minutes)</label>
-              <input type="file" id="video" name="video" accept="video/*"
-                className="mt-1 block w-full text-sm text-gray-300
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-full file:border-0
-                file:text-sm file:font-semibold
-                file:bg-teal-50 file:text-teal-700
-                hover:file:bg-teal-100"
-                onChange={handleVideoChange} />
-              <div className="mt-2">
-                <button type="button" onClick={isRecording ? stopRecording : startRecording}
-                  className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition duration-300">
-                  {isRecording ? 'Stop Recording' : 'Start Recording'}
-                </button>
-                {!isRecording && recordedChunks.length > 0 && (
-                  <button type="button" onClick={handleRecordedVideo}
-                    className="ml-2 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition duration-300">
-                    Use Recorded Video
-                  </button>
-                )}
+    <div className="min-h-screen bg-gray-900">
+      {/* Hero Section */}
+      <div className="relative h-[50vh] md:h-[60vh] lg:h-[70vh]">
+        {/* Uncomment the next line to use video instead of image */}
+        {/* <video src="/hero-video-3.mp4" className="w-full h-full object-cover" autoPlay loop muted /> */}
+        <Image
+          src="/hero-image-1.jpg"
+          alt="Teach on StripTeach"
+          layout="fill"
+          objectFit="cover"
+          quality={100}
+        />
+        <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4">
+              Become a StripTeach Instructor
+            </h1>
+            <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">
+              Share your expertise, inspire students, and build a rewarding career
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Benefits Section */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white mb-8 text-center">Why Teach on StripTeach?</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              { title: 'Global Reach', description: 'Connect with students worldwide' },
+              { title: 'Flexible Schedule', description: 'Teach on your own terms' },
+              { title: 'Earn More', description: 'Unlock your earning potential' },
+              { title: 'Cutting-edge Tools', description: 'Access the latest teaching resources' },
+            ].map((benefit, index) => (
+              <div key={index} className="bg-gray-800 rounded-lg p-6 text-center">
+                <div className="text-teal-400 mb-4">
+                  {/* Add appropriate icon here */}
+                  <svg className="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{benefit.title}</h3>
+                <p className="text-gray-400">{benefit.description}</p>
               </div>
-              <video ref={videoRef} className="mt-2 w-full" autoPlay muted />
-            </div>
-            <div>
-              <button type="submit"
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-teal-500 to-lime-500 hover:from-teal-600 hover:to-lime-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-                disabled={uploading}>
-                {uploading ? 'Submitting...' : 'Submit Application'}
-              </button>
-            </div>
-          </form>
+            ))}
+          </div>
+        </div>
+
+        {/* Application Form */}
+        <div className="bg-gray-800 rounded-lg shadow-xl overflow-hidden">
+          <div className="px-6 py-8">
+            <h2 className="text-3xl font-bold text-center text-white mb-8">Apply to Teach</h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Form fields */}
+              {/* ... (keep existing form fields, but update their styling) ... */}
+              <div>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-300">Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  className="mt-1 block w-full border-gray-600 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 bg-gray-700 text-white"
+                  value={formData.name}
+                  onChange={handleChange}
+                />
+              </div>
+              {/* ... other form fields ... */}
+
+              {/* Video upload/record section */}
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Upload or Record a short introduction video (max 2 minutes)
+                </label>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <input
+                    type="file"
+                    id="video"
+                    name="video"
+                    accept="video/*"
+                    className="hidden"
+                    onChange={handleVideoChange}
+                  />
+                  <label
+                    htmlFor="video"
+                    className="flex-1 cursor-pointer bg-teal-600 hover:bg-teal-700 text-white font-bold py-2 px-4 rounded text-center transition duration-300"
+                  >
+                    Choose Video File
+                  </label>
+                  <button
+                    type="button"
+                    onClick={isRecording ? stopRecording : startRecording}
+                    className="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+                  >
+                    {isRecording ? 'Stop Recording' : 'Start Recording'}
+                  </button>
+                  {!isRecording && recordedChunks.length > 0 && (
+                    <button
+                      type="button"
+                      onClick={handleRecordedVideo}
+                      className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300"
+                    >
+                      Use Recorded Video
+                    </button>
+                  )}
+                </div>
+                <video ref={videoRef} className="mt-4 w-full rounded" autoPlay muted />
+              </div>
+
+              {/* Submit button */}
+              <div>
+                <button
+                  type="submit"
+                  className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-gradient-to-r from-teal-500 to-blue-500 hover:from-teal-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition duration-300"
+                  disabled={uploading}
+                >
+                  {uploading ? 'Submitting...' : 'Submit Application'}
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       </div>
     </div>

@@ -43,6 +43,7 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroCarousel />
 
+
       {/* Course Categories Banner */}
       <section className="py-24 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
         <div className="container mx-auto">
@@ -84,12 +85,73 @@ export default function Home() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Explore Courses
+                      See Courses
                     </motion.button>
                   </div>
                 </motion.div>
               ))}
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Featured Teachers Section */}
+      <section className="py-32 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
+        <div className="container mx-auto">
+          <motion.h2 
+            className="text-6xl font-bold mb-20 text-center text-white"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Meet Our Star Teachers
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {[
+              { name: "Prof. Allura Spark", image: "/hero-image.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
+              { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
+              { name: "Mx. Nova Frost", image: "/hero-image-3.jpg", specialty: "Cybersecurity", rating: 4.9 }
+            ].map((teacher, index) => (
+              <motion.div 
+                key={index}
+                className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl transform transition duration-500 hover:scale-105"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="relative h-80">
+                  <Image 
+                    src={teacher.image}
+                    alt={teacher.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="brightness-75"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-6">
+                    <h3 className="text-3xl font-bold text-white mb-2">{teacher.name}</h3>
+                    <p className="text-purple-300 text-lg">{teacher.specialty}</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="flex mr-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-5 w-5 ${i < Math.floor(teacher.rating) ? 'text-yellow-400' : 'text-gray-400'}`} fill="currentColor" />
+                      ))}
+                    </div>
+                    <span className="text-white">{teacher.rating.toFixed(1)}</span>
+                  </div>
+                  <p className="text-gray-300 mb-6">
+                    Embark on a mind-bending journey through {teacher.specialty} with {teacher.name.split(' ')[1]}. 
+                    Prepare to have your neurons tickled and your paradigms shifted!
+                  </p>
+                  <StyledButton href={`/teachers/${index + 1}`} className="w-full">
+                    View Profile
+                  </StyledButton>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
@@ -195,11 +257,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works section */}
-      <section className="py-32 px-4 bg-gray-900">
+      {/* How Stripteach Works section */}
+      <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center"
+            className="text-6xl font-bold mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -208,24 +270,34 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {[
-              { icon: Book, title: "Strip Away Ignorance", description: "Peel back the layers of complexity and reveal the naked truth of knowledge." },
-              { icon: Brain, title: "Kiss Confusion Goodbye", description: "Our AI tutors will seduce your mind with clarity and understanding." },
-              { icon: Lightbulb, title: "Ignite Your Passion", description: "Fan the flames of curiosity and watch your skills blaze to new heights." }
+              { icon: Book, title: "Personalized Learning", description: "Our AI analyzes your learning style and adapts content to suit your needs.", steps: ["Take a quick assessment", "Receive a tailored curriculum", "Learn at your own pace"] },
+              { icon: Brain, title: "Interactive AI Tutoring", description: "Engage with our advanced AI tutors for real-time support and guidance.", steps: ["Ask questions anytime", "Get instant, detailed explanations", "Practice with AI-generated exercises"] },
+              { icon: Lightbulb, title: "Skill Mastery", description: "Track your progress and master new skills with our comprehensive approach.", steps: ["Set learning goals", "Complete hands-on projects", "Earn verifiable certificates"] }
             ].map((item, index) => (
               <motion.div 
                 key={index} 
-                className="text-center relative p-8 bg-gray-800 rounded-lg shadow-lg"
+                className="relative p-8 bg-gray-800 rounded-lg shadow-xl overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-purple-600 to-transparent opacity-10 rounded-lg" />
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 opacity-10" />
                 <div className="relative z-10">
-                  <item.icon className="w-20 h-20 mx-auto mb-6 text-purple-400" />
-                  <h3 className="text-3xl font-semibold mb-4">{item.title}</h3>
+                  <div className="bg-purple-700 rounded-full p-4 inline-block mb-6">
+                    <item.icon className="w-12 h-12 text-white" />
+                  </div>
+                  <h3 className="text-3xl font-semibold mb-4 text-white">{item.title}</h3>
                   <p className="text-gray-300 text-lg mb-6">{item.description}</p>
+                  <ul className="space-y-3 mb-8">
+                    {item.steps.map((step, stepIndex) => (
+                      <li key={stepIndex} className="flex items-center text-gray-300">
+                        <CheckCircle className="mr-2 text-green-400 flex-shrink-0" />
+                        <span>{step}</span>
+                      </li>
+                    ))}
+                  </ul>
                   <motion.button 
-                    className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300"
+                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -235,6 +307,17 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+          <motion.div 
+            className="mt-20 text-center"
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            <p className="text-2xl text-gray-300 mb-8">Ready to experience the future of learning?</p>
+            <StyledButton href="/get-started" className="text-xl px-10 py-4">
+              Get Started Now
+            </StyledButton>
+          </motion.div>
         </div>
       </section>
 
@@ -471,66 +554,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Featured Teachers Section */}
-      <section className="py-32 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
-        <div className="container mx-auto">
-          <motion.h2 
-            className="text-6xl font-bold mb-20 text-center text-white"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Meet Our Star Teachers
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-            {[
-              { name: "Prof. Allura Spark", image: "/hero-image.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
-              { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
-              { name: "Mx. Nova Frost", image: "/hero-image-3.jpg", specialty: "Cybersecurity", rating: 4.9 }
-            ].map((teacher, index) => (
-              <motion.div 
-                key={index}
-                className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl transform transition duration-500 hover:scale-105"
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                <div className="relative h-80">
-                  <Image 
-                    src={teacher.image}
-                    alt={teacher.name}
-                    layout="fill"
-                    objectFit="cover"
-                    className="brightness-75"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-6">
-                    <h3 className="text-3xl font-bold text-white mb-2">{teacher.name}</h3>
-                    <p className="text-purple-300 text-lg">{teacher.specialty}</p>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <div className="flex items-center mb-4">
-                    <div className="flex mr-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star key={i} className={`h-5 w-5 ${i < Math.floor(teacher.rating) ? 'text-yellow-400' : 'text-gray-400'}`} fill="currentColor" />
-                      ))}
-                    </div>
-                    <span className="text-white">{teacher.rating.toFixed(1)}</span>
-                  </div>
-                  <p className="text-gray-300 mb-6">
-                    Embark on a mind-bending journey through {teacher.specialty} with {teacher.name.split(' ')[1]}. 
-                    Prepare to have your neurons tickled and your paradigms shifted!
-                  </p>
-                  <StyledButton href={`/teachers/${index + 1}`} className="w-full">
-                    View Profile
-                  </StyledButton>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
+
     </div>
   )
 }

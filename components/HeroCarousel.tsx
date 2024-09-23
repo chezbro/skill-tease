@@ -97,10 +97,11 @@ export default function HeroCarousel() {
         </p>
         <Link 
           href="/waitlist" 
-          className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-3 px-8 text-lg transition-all duration-300 relative overflow-hidden group"
+          className="inline-block text-xl font-bold text-white py-4 px-10 rounded-full transition-all duration-300 relative overflow-hidden group"
         >
           <span className="relative z-10">Join Waitlist</span>
-          <div className="absolute inset-0 h-full w-full bg-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 group-hover:from-purple-700 group-hover:to-blue-600"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-blue-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300 blur-xl"></div>
         </Link>
       </div>
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
