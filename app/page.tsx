@@ -122,6 +122,106 @@ export default function Home() {
         </div>
       </section>
 
+      {/* New Course Details Preview Section */}
+      <section className="py-32 px-4 bg-gray-900">
+        <div className="container mx-auto">
+          <motion.h2 
+            className="text-6xl font-bold mb-20 text-center"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Featured Course
+          </motion.h2>
+          <motion.div 
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Course Video Preview */}
+              <div 
+                className="relative h-96 lg:h-auto"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Image 
+                  src="/hero-image-1.jpg" 
+                  alt="Advanced Web Development" 
+                  layout="fill" 
+                  objectFit="cover" 
+                  className={`brightness-75 transition-opacity duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
+                />
+                <video
+                  ref={videoRef}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
+                  src="/course-preview.mp4"
+                  muted
+                  playsInline
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.button 
+                    className={`bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-all duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <PlayCircle />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Course Details */}
+              <div className="p-8">
+                <h3 className="text-3xl font-bold mb-4 text-white">Advanced Web Development</h3>
+                <p className="text-gray-300 mb-6">Master the latest web technologies and frameworks in this comprehensive course. Suitable for intermediate to advanced developers looking to upgrade their skills.</p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center">
+                    <Book className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">12 weeks</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Brain className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">Advanced</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Lightbulb className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">4.8 / 5 rating</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Zap className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">1234 students</span>
+                  </div>
+                </div>
+                <h4 className="text-xl font-semibold mb-4 text-white">Course Curriculum</h4>
+                <ul className="space-y-2 mb-8">
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Modern JavaScript
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    React Fundamentals
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Backend Development with Node.js
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Advanced React Patterns
+                  </li>
+                </ul>
+                <StyledButton href="/courses/1" className="w-full flex items-center justify-center">
+                  View Full Course Details
+                  <ArrowRight className="ml-2" />
+                </StyledButton>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* How it works section */}
       <section className="py-32 px-4 bg-gray-900">
         <div className="container mx-auto">
@@ -287,105 +387,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* New Course Details Preview Section */}
-      <section className="py-32 px-4 bg-gray-900">
-        <div className="container mx-auto">
-          <motion.h2 
-            className="text-6xl font-bold mb-20 text-center"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Featured Course
-          </motion.h2>
-          <motion.div 
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              {/* Course Video Preview */}
-              <div 
-                className="relative h-96 lg:h-auto"
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                <Image 
-                  src="/hero-image-1.jpg" 
-                  alt="Advanced Web Development" 
-                  layout="fill" 
-                  objectFit="cover" 
-                  className={`brightness-75 transition-opacity duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
-                />
-                <video
-                  ref={videoRef}
-                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
-                  src="/course-preview.mp4"
-                  muted
-                  playsInline
-                />
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <motion.button 
-                    className={`bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-all duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <PlayCircle />
-                  </motion.button>
-                </div>
-              </div>
 
-              {/* Course Details */}
-              <div className="p-8">
-                <h3 className="text-3xl font-bold mb-4 text-white">Advanced Web Development</h3>
-                <p className="text-gray-300 mb-6">Master the latest web technologies and frameworks in this comprehensive course. Suitable for intermediate to advanced developers looking to upgrade their skills.</p>
-                <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="flex items-center">
-                    <Book className="mr-2 text-purple-400" />
-                    <span className="text-gray-300">12 weeks</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Brain className="mr-2 text-purple-400" />
-                    <span className="text-gray-300">Advanced</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Lightbulb className="mr-2 text-purple-400" />
-                    <span className="text-gray-300">4.8 / 5 rating</span>
-                  </div>
-                  <div className="flex items-center">
-                    <Zap className="mr-2 text-purple-400" />
-                    <span className="text-gray-300">1234 students</span>
-                  </div>
-                </div>
-                <h4 className="text-xl font-semibold mb-4 text-white">Course Curriculum</h4>
-                <ul className="space-y-2 mb-8">
-                  <li className="flex items-center text-gray-300">
-                    <CheckCircle className="mr-2 text-green-400" />
-                    Modern JavaScript
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <CheckCircle className="mr-2 text-green-400" />
-                    React Fundamentals
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <CheckCircle className="mr-2 text-green-400" />
-                    Backend Development with Node.js
-                  </li>
-                  <li className="flex items-center text-gray-300">
-                    <CheckCircle className="mr-2 text-green-400" />
-                    Advanced React Patterns
-                  </li>
-                </ul>
-                <StyledButton href="/courses/1" className="w-full flex items-center justify-center">
-                  View Full Course Details
-                  <ArrowRight className="ml-2" />
-                </StyledButton>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
 
       {/* Pricing Section */}
       <section id="pricing" className="py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-purple-900 to-gray-900">
