@@ -76,7 +76,9 @@ export default function HeroCarousel() {
             />
           ) : (
             <video
-              ref={el => videoRefs.current[index] = el}
+              ref={el => {
+                videoRefs.current[index] = el;
+              }}
               src={item.src}
               className="absolute inset-0 w-full h-full object-cover brightness-50"
               muted
