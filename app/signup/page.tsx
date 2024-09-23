@@ -12,10 +12,20 @@ export default function SignUpPage() {
     setIsModalOpen(false)
   }
 
+  const handleOpenModal = () => {
+    setIsModalOpen(true)
+  }
+
   return (
     <div className="flex flex-col md:flex-row h-screen">
       <div className="w-full md:w-1/2 p-8">
         <Register />
+        <button 
+          onClick={handleOpenModal}
+          className="mt-4 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+        >
+          Open Sign Up Modal
+        </button>
       </div>
       <div className="w-full md:w-1/2">
         <HeroCarousel />
