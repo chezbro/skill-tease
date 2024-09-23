@@ -94,10 +94,10 @@ export default function HeroCarousel() {
           Tutors that reveal more as you master new subjects
         </p>
         <Link 
-          href="/register" 
+          href="/waitlist" 
           className="bg-purple-900 hover:bg-purple-800 text-white font-bold py-3 px-8 text-lg transition-all duration-300 relative overflow-hidden group"
         >
-          <span className="relative z-10">Sign Up</span>
+          <span className="relative z-10">Join Waitlist</span>
           <div className="absolute inset-0 h-full w-full bg-purple-700 transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
         </Link>
       </div>

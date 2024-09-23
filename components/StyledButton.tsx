@@ -1,23 +1,31 @@
-import React from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import React from 'react';
 
-interface StyledButtonProps {
-  href: string;
-  children: React.ReactNode;
+interface StyledButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  href?: string;
   className?: string;
 }
 
-export const StyledButton: React.FC<StyledButtonProps> = ({ href, children, className = '' }) => {
-  return (
-    <Link href={href}>
-      <motion.button
-        className={`px-8 py-4 text-lg font-bold text-white bg-gradient-to-r from-purple-600 to-pink-500 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 ${className}`}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-      >
+export const StyledButton: React.FC<StyledButtonProps> = ({ 
+  children, 
+  href, 
+  className = '', 
+  ...props 
+}) => {
+  const baseClasses = 'inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500';
+  const combinedClasses = `${baseClasses} ${className}`;
+
+  if (href) {
+    return (
+      <Link href={href} className={combinedClasses}>
         {children}
-      </motion.button>
-    </Link>
+      </Link>
+    );
+  }
+
+  return (
+    <button className={combinedClasses} {...props}>
+      {children}
+    </button>
   );
 };
