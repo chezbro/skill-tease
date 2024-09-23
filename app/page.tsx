@@ -5,8 +5,6 @@ import Image from 'next/image'
 import Link from 'next/link'
 import HeroCarousel from '@/components/HeroCarousel'
 import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle } from 'lucide-react'
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { GradientButton } from './path/to/GradientButton'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StyledButton } from '@/components/StyledButton'
 
