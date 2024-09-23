@@ -5,6 +5,7 @@ const nextConfig = {
     images: {
       domains: ['picsum.photos'],
     },
+    transpilePackages: ['lucide-react'],
 };
 
 export default nextConfig;
