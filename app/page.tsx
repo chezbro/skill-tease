@@ -4,7 +4,7 @@ import { useState, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import HeroCarousel from '@/components/HeroCarousel'
-import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle } from 'lucide-react'
+import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle, Star } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StyledButton } from '@/components/StyledButton'
 
@@ -21,46 +21,6 @@ const categories = [
   { name: 'Music', icon: '🎵' },
   { name: 'Language', icon: '🗣️' },
   { name: 'Fitness', icon: '💪' },
-]
-
-const pricingTiers = [
-  {
-    name: "Basic",
-    price: 19,
-    features: [
-      "Access to 50+ courses",
-      "Basic AI tutor assistance",
-      "Mobile app access",
-      "Course completion certificates",
-    ],
-    color: "blue",
-  },
-  {
-    name: "Pro",
-    price: 39,
-    features: [
-      "Access to 200+ courses",
-      "Advanced AI tutor with personalized learning paths",
-      "Priority support",
-      "Offline course downloads",
-      "Exclusive webinars and workshops",
-    ],
-    color: "purple",
-    recommended: true,
-  },
-  {
-    name: "Enterprise",
-    price: 99,
-    features: [
-      "Unlimited access to all courses",
-      "Premium AI tutor with real-time adaptive learning",
-      "Dedicated account manager",
-      "Custom course creation",
-      "Team collaboration tools",
-      "Advanced analytics and reporting",
-    ],
-    color: "green",
-  },
 ]
 
 export default function Home() {
@@ -416,7 +376,7 @@ export default function Home() {
 
 
 
-      {/* Pricing Section */}
+      {/* Waitlist Pricing Section */}
       <section id="pricing" className="py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-purple-900 to-gray-900">
         <div className="container mx-auto">
           <motion.h2 
@@ -425,59 +385,55 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Pricing Plans
+            Join Our Exclusive Waitlist
           </motion.h2>
           <p className="text-xl text-center text-gray-300 mb-16">
-            Choose the plan that fits your learning journey
+            Be among the first to experience Stripteach and enjoy special early adopter benefits
           </p>
 
-          {/* Pricing toggle */}
-          <div className="flex justify-center items-center mb-16">
-            <span className={`mr-3 ${!isAnnual ? 'text-white' : 'text-gray-400'}`}>Monthly</span>
-            <label className="switch">
-              <input type="checkbox" checked={isAnnual} onChange={() => setIsAnnual(!isAnnual)} />
-              <span className="slider round"></span>
-            </label>
-            <span className={`ml-3 ${isAnnual ? 'text-white' : 'text-gray-400'}`}>
-              Annual <span className="text-green-500 font-semibold">(Save 20%)</span>
-            </span>
-          </div>
+          {/* Waitlist offer */}
+          <motion.div 
+            className="bg-gray-800 rounded-lg p-8 shadow-lg max-w-2xl mx-auto"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h3 className="text-3xl font-bold mb-6 text-center">Early Adopter Offer</h3>
+            <ul className="mb-8 space-y-4">
+              <li className="flex items-center">
+                <CheckCircle className="mr-3 h-6 w-6 text-purple-500" />
+                <span>50% off your first 3 months of any plan</span>
+              </li>
+              <li className="flex items-center">
+                <CheckCircle className="mr-3 h-6 w-6 text-purple-500" />
+                <span>Exclusive access to beta features</span>
+              </li>
+              <li className="flex items-center">
+                <CheckCircle className="mr-3 h-6 w-6 text-purple-500" />
+                <span>Priority onboarding and support</span>
+              </li>
+              <li className="flex items-center">
+                <CheckCircle className="mr-3 h-6 w-6 text-purple-500" />
+                <span>Chance to win a lifetime premium membership</span>
+              </li>
+            </ul>
+            <p className="text-center text-lg mb-8">
+              Join now and be notified as soon as we launch!
+            </p>
+            <StyledButton href="/waitlist" className="w-full text-xl py-4">
+              Join the Waitlist
+            </StyledButton>
+            <p className="mt-6 text-center text-gray-400 text-sm">
+              No credit card required. Cancel anytime.
+            </p>
+          </motion.div>
 
-          {/* Pricing tiers */}
-          <div className="grid md:grid-cols-3 gap-12">
-            {pricingTiers.map((tier, index) => (
-              <motion.div 
-                key={tier.name}
-                className={`bg-gray-800 rounded-lg p-8 shadow-lg transition-all duration-300 transform hover:-translate-y-2 ${
-                  tier.recommended ? 'ring-2 ring-purple-500' : ''
-                }`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-              >
-                {tier.recommended && (
-                  <span className="bg-purple-500 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block">
-                    Recommended
-                  </span>
-                )}
-                <h3 className="text-2xl font-bold mb-4">{tier.name}</h3>
-                <p className="text-4xl font-bold mb-6">
-                  ${isAnnual ? tier.price * 10 : tier.price}
-                  <span className="text-gray-400 text-lg font-normal">/{isAnnual ? 'year' : 'month'}</span>
-                </p>
-                <ul className="mb-8 space-y-3">
-                  {tier.features.map((feature, index) => (
-                    <li key={index} className="flex items-center">
-                      <CheckCircle className={`mr-2 h-5 w-5 text-${tier.color}-500`} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-                <StyledButton href="/signup" className="w-full">
-                  Get Started
-                </StyledButton>
-              </motion.div>
-            ))}
+          {/* Testimonial */}
+          <div className="mt-16 text-center">
+            <p className="text-xl italic mb-4">
+              "I joined the waitlist and got early access. The discounted rate was amazing, but the learning experience was priceless!"
+            </p>
+            <p className="text-purple-400 font-semibold">- Sarah K., Early Adopter</p>
           </div>
         </div>
       </section>
@@ -507,11 +463,72 @@ export default function Home() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <StyledButton href="/#pricing" className="text-xl px-12 py-6">
+            <StyledButton href="/waitlist" className="text-xl px-12 py-6">
               Start Your Journey Now
             </StyledButton>
-            <p className="mt-8 text-gray-400">Still not convinced? Check out our <Link href="/free-trial" className="text-purple-400 hover:text-purple-300 underline">free trial</Link> and experience the Stripteach difference!</p>
+            <p className="mt-8 text-gray-400">Still not convinced? Check out our <Link href="/waitlist" className="text-purple-400 hover:text-purple-300 underline">free trial</Link> and experience the Stripteach difference!</p>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Featured Teachers Section */}
+      <section className="py-32 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
+        <div className="container mx-auto">
+          <motion.h2 
+            className="text-6xl font-bold mb-20 text-center text-white"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Meet Our Star Teachers
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+            {[
+              { name: "Prof. Allura Spark", image: "/hero-image.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
+              { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
+              { name: "Mx. Nova Frost", image: "/hero-image-3.jpg", specialty: "Cybersecurity", rating: 4.9 }
+            ].map((teacher, index) => (
+              <motion.div 
+                key={index}
+                className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl transform transition duration-500 hover:scale-105"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+              >
+                <div className="relative h-80">
+                  <Image 
+                    src={teacher.image}
+                    alt={teacher.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="brightness-75"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+                  <div className="absolute bottom-0 left-0 p-6">
+                    <h3 className="text-3xl font-bold text-white mb-2">{teacher.name}</h3>
+                    <p className="text-purple-300 text-lg">{teacher.specialty}</p>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <div className="flex items-center mb-4">
+                    <div className="flex mr-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`h-5 w-5 ${i < Math.floor(teacher.rating) ? 'text-yellow-400' : 'text-gray-400'}`} fill="currentColor" />
+                      ))}
+                    </div>
+                    <span className="text-white">{teacher.rating.toFixed(1)}</span>
+                  </div>
+                  <p className="text-gray-300 mb-6">
+                    Embark on a mind-bending journey through {teacher.specialty} with {teacher.name.split(' ')[1]}. 
+                    Prepare to have your neurons tickled and your paradigms shifted!
+                  </p>
+                  <StyledButton href={`/teachers/${index + 1}`} className="w-full">
+                    View Profile
+                  </StyledButton>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
       </section>
     </div>
