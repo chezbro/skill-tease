@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
+import { PrismaClient } from '@prisma/client'
+import path from 'path'
+import { writeFile } from 'fs/promises'
 
+const prisma = new PrismaClient()
 const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!)
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
