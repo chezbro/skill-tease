@@ -5,9 +5,32 @@ import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { PlayCircle, CheckCircle, XCircle } from 'lucide-react'
 
+interface Quiz {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+}
+
+interface Lesson {
+  id: string;
+  title: string;
+  content: string;
+  videoUrl: string;
+  quiz: Quiz;
+}
+
+interface Course {
+  id: string;
+  title: string;
+  description: string;
+  heroImage: string;
+  videoUrl: string;
+  lessons: Lesson[];
+}
+
 export default function CoursePage() {
   const { id } = useParams()
-  const [course, setCourse] = useState<any>(null)
+  const [course, setCourse] = useState<Course | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
   const [quizAnswer, setQuizAnswer] = useState<number | null>(null)
@@ -24,7 +47,7 @@ export default function CoursePage() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`)
         }
-        const data = await response.json()
+        const data: Course = await response.json()
         setCourse(data)
       } catch (e) {
         console.error("Failed to fetch course:", e)
@@ -149,7 +172,7 @@ export default function CoursePage() {
                 <h3 className="text-xl font-bold mb-4 text-white">Quiz</h3>
                 <p className="text-gray-300 mb-4">{currentLesson.quiz.question}</p>
                 <div className="space-y-2">
-                  {currentLesson.quiz.options.map((option, index) => (
+                  {currentLesson.quiz.options.map((option: string, index: number) => (
                     <button
                       key={index}
                       className={`w-full text-left p-2 rounded ${
