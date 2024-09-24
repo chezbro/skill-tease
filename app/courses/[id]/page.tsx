@@ -7,8 +7,8 @@ import { PlayCircle, CheckCircle, XCircle } from 'lucide-react'
 
 export default function CoursePage() {
   const { id } = useParams()
-  const [course, setCourse] = useState(null)
-  const [error, setError] = useState(null)
+  const [course, setCourse] = useState<any>(null)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -42,7 +42,7 @@ export default function CoursePage() {
     if (videoRef.current) {
       videoRef.current.play().catch(e => {
         console.error("Error playing video:", e)
-        setVideoError(e.message)
+        setVideoError(e instanceof Error ? e.message : String(e))
       })
       setIsVideoPlaying(true)
     }
