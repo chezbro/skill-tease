@@ -3,49 +3,40 @@
 import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { PlayCircle } from 'lucide-react'
+import { PlayCircle, CheckCircle, XCircle } from 'lucide-react'
 
-// Mock data (in a real app, you'd fetch this from an API)
-const mockCourseData = {
-  id: '1',
-  title: "Advanced Web Development",
-  description: "Master the latest web technologies and frameworks in this comprehensive course. Suitable for intermediate to advanced developers looking to upgrade their skills.",
-  instructor: "Jane Doe",
-  duration: "12 weeks",
-  level: "Advanced",
-  rating: 4.8,
-  enrolledStudents: 1234,
-  heroImage: "/hero-image-1.jpg",
-  videoUrl: "/course-preview.mp4",
-  curriculum: [
-    {
-      title: "Module 1: Modern JavaScript",
-      lessons: ["ES6+ Features", "Asynchronous JavaScript", "JavaScript Modules"]
-    },
-    {
-      title: "Module 2: React Fundamentals",
-      lessons: ["JSX and Components", "State and Props", "Hooks and Context API"]
-    },
-    {
-      title: "Module 3: Backend Development with Node.js",
-      lessons: ["Express.js Basics", "RESTful API Design", "Database Integration"]
-    },
-    {
-      title: "Module 4: Advanced React Patterns",
-      lessons: ["Higher-Order Components", "Render Props", "Custom Hooks"]
-    }
-  ]
-}
-
-export default function CourseDetailPage() {
+export default function CoursePage() {
   const { id } = useParams()
-  const [activeModule, setActiveModule] = useState(0)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const [videoError, setVideoError] = useState<string | null>(null)
-  const videoRef = useRef<HTMLVideoElement>(null)
+  const [course, setCourse] = useState(null)
+  const [error, setError] = useState(null)
 
-  // In a real app, you'd fetch the course data based on the id
-  const course = mockCourseData
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await fetch(`/api/courses/${id}`)
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`)
+        }
+        const data = await response.json()
+        setCourse(data)
+      } catch (e) {
+        console.error("Failed to fetch course:", e)
+        setError("Failed to load course. Please try again later.")
+      }
+    }
+
+    fetchCourse()
+  }, [id])
+
+  if (error) {
+    return <div className="text-red-500">{error}</div>
+  }
+
+  if (!course) {
+    return <div>Loading...</div>
+  }
+
+  const currentLesson = course.lessons[currentLessonIndex]
 
   const playVideo = () => {
     if (videoRef.current) {
@@ -65,6 +56,19 @@ export default function CourseDetailPage() {
       })
     }
   }, [])
+
+  const handleQuizSubmit = () => {
+    setQuizSubmitted(true)
+  }
+
+  const moveToNextLesson = () => {
+    if (currentLessonIndex < course.lessons.length - 1) {
+      setCurrentLessonIndex(currentLessonIndex + 1)
+      setQuizAnswer(null)
+      setQuizSubmitted(false)
+      setIsVideoPlaying(false)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-gray-900">
@@ -114,49 +118,98 @@ export default function CourseDetailPage() {
           <div className="lg:w-2/3">
             <h1 className="text-4xl font-bold mb-4 text-white">{course.title}</h1>
             <p className="text-gray-300 mb-6">{course.description}</p>
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="course-info-card">
-                <h3 className="font-semibold text-white">Instructor</h3>
-                <p className="text-gray-300">{course.instructor}</p>
+            
+            {/* Lesson Content */}
+            <div className="bg-gray-800 p-6 rounded-lg mb-6">
+              <h2 className="text-2xl font-bold mb-4 text-white">{currentLesson.title}</h2>
+              <p className="text-gray-300 mb-6">{currentLesson.content}</p>
+              
+              {/* Lesson Video */}
+              <div className="mb-6">
+                <video
+                  ref={videoRef}
+                  className="w-full h-auto"
+                  src={currentLesson.videoUrl}
+                  controls
+                  playsInline
+                >
+                  Your browser does not support the video tag.
+                </video>
               </div>
-              <div className="course-info-card">
-                <h3 className="font-semibold text-white">Duration</h3>
-                <p className="text-gray-300">{course.duration}</p>
-              </div>
-              <div className="course-info-card">
-                <h3 className="font-semibold text-white">Level</h3>
-                <p className="text-gray-300">{course.level}</p>
-              </div>
-              <div className="course-info-card">
-                <h3 className="font-semibold text-white">Rating</h3>
-                <p className="text-gray-300">{course.rating} / 5</p>
+
+              {/* Quiz Section */}
+              <div className="bg-gray-700 p-4 rounded-lg">
+                <h3 className="text-xl font-bold mb-4 text-white">Quiz</h3>
+                <p className="text-gray-300 mb-4">{currentLesson.quiz.question}</p>
+                <div className="space-y-2">
+                  {currentLesson.quiz.options.map((option, index) => (
+                    <button
+                      key={index}
+                      className={`w-full text-left p-2 rounded ${
+                        quizAnswer === index
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-600 text-gray-300'
+                      } hover:bg-blue-500 transition duration-300`}
+                      onClick={() => setQuizAnswer(index)}
+                      disabled={quizSubmitted}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+                {!quizSubmitted ? (
+                  <button
+                    className="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300"
+                    onClick={handleQuizSubmit}
+                    disabled={quizAnswer === null}
+                  >
+                    Submit Answer
+                  </button>
+                ) : (
+                  <div className="mt-4">
+                    {quizAnswer === currentLesson.quiz.correctAnswer ? (
+                      <div className="flex items-center text-green-500">
+                        <CheckCircle className="mr-2" />
+                        Correct! Well done!
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-red-500">
+                        <XCircle className="mr-2" />
+                        Incorrect. Try again!
+                      </div>
+                    )}
+                    {quizAnswer === currentLesson.quiz.correctAnswer && (
+                      <button
+                        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300"
+                        onClick={moveToNextLesson}
+                      >
+                        Next Lesson
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
-            <button className="enroll-button hover:shadow-neon-blue">
-              Enroll Now
-            </button>
           </div>
 
-          {/* Curriculum */}
+          {/* Course Progress */}
           <div className="lg:w-1/3">
-            <h2 className="text-2xl font-bold mb-4 text-white">Course Curriculum</h2>
+            <h2 className="text-2xl font-bold mb-4 text-white">Course Progress</h2>
             <div className="space-y-4">
-              {course.curriculum.map((module, index) => (
-                <div key={index} className="course-curriculum-item">
-                  <button
-                    className="w-full text-left px-4 py-2 font-semibold text-white hover:bg-gray-700 transition duration-300"
-                    onClick={() => setActiveModule(index)}
-                  >
-                    {module.title}
-                  </button>
-                  {activeModule === index && (
-                    <ul className="bg-gray-700 px-4 py-2">
-                      {module.lessons.map((lesson, lessonIndex) => (
-                        <li key={lessonIndex} className="text-gray-300 py-1">
-                          {lesson}
-                        </li>
-                      ))}
-                    </ul>
+              {course.lessons.map((lesson, index) => (
+                <div
+                  key={lesson.id}
+                  className={`p-4 rounded-lg ${
+                    index === currentLessonIndex
+                      ? 'bg-blue-600 text-white'
+                      : index < currentLessonIndex
+                      ? 'bg-green-600 text-white'
+                      : 'bg-gray-700 text-gray-300'
+                  }`}
+                >
+                  <h3 className="font-semibold">{lesson.title}</h3>
+                  {index < currentLessonIndex && (
+                    <CheckCircle className="inline-block ml-2" size={16} />
                   )}
                 </div>
               ))}

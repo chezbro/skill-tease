@@ -72,7 +72,10 @@ export default function Home() {
                       layout="fill" 
                       objectFit="cover" 
                       className="brightness-75"
+                      placeholder="blur"
+                      blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                     />
+                    <div className="absolute inset-0 backdrop-blur-sm bg-black bg-opacity-30" />
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-6xl">{category.icon}</div>
                     </div>
@@ -80,13 +83,15 @@ export default function Home() {
                   <div className="p-6">
                     <h3 className="text-2xl font-semibold mb-4">{category.name}</h3>
                     <p className="text-gray-300 mb-6">Discover the secrets of {category.name.toLowerCase()} with our expert-led courses.</p>
-                    <motion.button 
-                      className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 w-full"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      See Courses
-                    </motion.button>
+                    <Link href={`/courses/category/${category.name.toLowerCase()}`}>
+                      <motion.button 
+                        className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 w-full"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        See Courses
+                      </motion.button>
+                    </Link>
                   </div>
                 </motion.div>
               ))}
@@ -108,7 +113,7 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {[
-              { name: "Prof. Allura Spark", image: "/hero-image.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
+              { name: "Prof. Allura Spark", image: "/hero-image-4.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
               { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
               { name: "Mx. Nova Frost", image: "/hero-image-3.jpg", specialty: "Cybersecurity", rating: 4.9 }
             ].map((teacher, index) => (
@@ -126,8 +131,10 @@ export default function Home() {
                     layout="fill"
                     objectFit="cover"
                     className="brightness-75"
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent" />
+                  <div className="absolute inset-0 backdrop-blur-sm bg-black bg-opacity-30" />
                   <div className="absolute bottom-0 left-0 p-6">
                     <h3 className="text-3xl font-bold text-white mb-2">{teacher.name}</h3>
                     <p className="text-purple-300 text-lg">{teacher.specialty}</p>
@@ -146,9 +153,6 @@ export default function Home() {
                     Embark on a mind-bending journey through {teacher.specialty} with {teacher.name.split(' ')[1]}. 
                     Prepare to have your neurons tickled and your paradigms shifted!
                   </p>
-                  <StyledButton href={`/teachers/${index + 1}`} className="w-full">
-                    View Profile
-                  </StyledButton>
                 </div>
               </motion.div>
             ))}
@@ -165,10 +169,12 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Featured Course
+            Featured Courses
           </motion.h2>
+          
+          {/* Existing Advanced Web Development Course */}
           <motion.div 
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl"
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-20"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
@@ -254,10 +260,99 @@ export default function Home() {
               </div>
             </div>
           </motion.div>
+
+          {/* New Spanish Language Course */}
+          <motion.div 
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8 }}
+          >
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              {/* Course Video Preview */}
+              <div 
+                className="relative h-96 lg:h-auto"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <Image 
+                  src="/hero-image.jpg" 
+                  alt="Immersive Spanish" 
+                  layout="fill" 
+                  objectFit="cover" 
+                  className={`brightness-75 transition-opacity duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
+                />
+                <video
+                  ref={videoRef}
+                  className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
+                  src="/hero-video-5.mp4"
+                  muted
+                  playsInline
+                  loop
+                />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <motion.button 
+                    className={`bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-all duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <PlayCircle />
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Course Details */}
+              <div className="p-8">
+                <h3 className="text-3xl font-bold mb-4 text-white">Immersive Spanish</h3>
+                <p className="text-gray-300 mb-6">Dive into the rich world of Spanish language and culture. Perfect for beginners and intermediate learners looking to enhance their linguistic skills and cultural understanding.</p>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="flex items-center">
+                    <Book className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">10 weeks</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Brain className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">Beginner to Intermediate</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Lightbulb className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">4.9 / 5 rating</span>
+                  </div>
+                  <div className="flex items-center">
+                    <Zap className="mr-2 text-purple-400" />
+                    <span className="text-gray-300">2345 students</span>
+                  </div>
+                </div>
+                <h4 className="text-xl font-semibold mb-4 text-white">Course Curriculum</h4>
+                <ul className="space-y-2 mb-8">
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Essential Spanish Grammar
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Conversational Spanish
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Spanish Culture and Customs
+                  </li>
+                  <li className="flex items-center text-gray-300">
+                    <CheckCircle className="mr-2 text-green-400" />
+                    Latin American Literature
+                  </li>
+                </ul>
+                <StyledButton href="/courses/2" className="w-full flex items-center justify-center">
+                  View Full Course Details
+                  <ArrowRight className="ml-2" />
+                </StyledButton>
+              </div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* How Stripteach Works section */}
+      {/* How StripTeach Works section */}
       <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
@@ -266,7 +361,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            How Stripteach Works
+            How StripTeach Works
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {[
@@ -296,13 +391,6 @@ export default function Home() {
                       </li>
                     ))}
                   </ul>
-                  <motion.button 
-                    className="bg-gradient-to-r from-purple-600 to-blue-600 text-white px-6 py-3 rounded-full hover:from-purple-700 hover:to-blue-700 transition-all duration-300 shadow-lg"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Learn More
-                  </motion.button>
                 </div>
               </motion.div>
             ))}
@@ -314,8 +402,8 @@ export default function Home() {
             transition={{ duration: 0.8, delay: 0.6 }}
           >
             <p className="text-2xl text-gray-300 mb-8">Ready to experience the future of learning?</p>
-            <StyledButton href="/get-started" className="text-xl px-10 py-4">
-              Get Started Now
+            <StyledButton href="/waitlist" className="text-xl px-10 py-4">
+              Join Waitlist
             </StyledButton>
           </motion.div>
         </div>
@@ -334,9 +422,9 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {[
-              { name: "Jane D.", role: "Web Developer", quote: "Stripteach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. Stripteach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
-              { name: "John S.", role: "Data Scientist", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, Stripteach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
-              { name: "Emily R.", role: "UX Designer", quote: "Stripteach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "Stripteach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the AI tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
+              { name: "Jane D.", role: "Web Developer", quote: "StripTeach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. StripTeach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
+              { name: "John S.", role: "Data Scientist", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, StripTeach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
+              { name: "Emily R.", role: "UX Designer", quote: "StripTeach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "StripTeach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the AI tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
             ].map((testimonial, index) => (
               <motion.div 
                 key={index} 
@@ -354,7 +442,10 @@ export default function Home() {
                     layout="fill" 
                     objectFit="cover" 
                     className="brightness-50"
+                    placeholder="blur"
+                    blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mN8/+F9PQAI8wNPvd7POQAAAABJRU5ErkJggg=="
                   />
+                  <div className="absolute inset-0 backdrop-blur-sm bg-black bg-opacity-30" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <Image 
                       src={`https://picsum.photos/seed/${index}/120/120`} 
@@ -404,60 +495,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Example lesson section */}
-      <section className="py-24 px-4 bg-gray-900 min-h-screen flex items-center">
-        <div className="container mx-auto">
-          <motion.h2 
-            className="text-5xl font-bold mb-16 text-center"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Sneak a Peek at Our Lessons
-          </motion.h2>
-          <motion.div 
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div 
-              className="relative h-96"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Image 
-                src="/hero-image-1.jpg" 
-                alt="Lesson Preview" 
-                layout="fill" 
-                objectFit="cover" 
-                className={`brightness-75 transition-opacity duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
-                unoptimized
-              />
-              <video
-                ref={videoRef}
-                className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${isVideoPlaying ? 'opacity-100' : 'opacity-0'}`}
-                src="/hero-video-3.mp4"
-                muted
-                playsInline
-                loop
-              />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.button 
-                  className={`bg-purple-600 text-white text-6xl rounded-full p-4 hover:bg-purple-700 transition-all duration-300 ${isVideoPlaying ? 'opacity-0' : 'opacity-100'}`}
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                >
-                  <Zap />
-                </motion.button>
-              </div>
-            </div>
-            {/* ... rest of the section content ... */}
-          </motion.div>
-        </div>
-      </section>
-
-
 
       {/* Waitlist Pricing Section */}
       <section id="pricing" className="py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-purple-900 to-gray-900">
@@ -471,7 +508,7 @@ export default function Home() {
             Join Our Exclusive Waitlist
           </motion.h2>
           <p className="text-xl text-center text-gray-300 mb-16">
-            Be among the first to experience Stripteach and enjoy special early adopter benefits
+            Be among the first to experience StripTeach and enjoy special early adopter benefits
           </p>
 
           {/* Waitlist offer */}
@@ -518,39 +555,6 @@ export default function Home() {
             </p>
             <p className="text-purple-400 font-semibold">- Sarah K., Early Adopter</p>
           </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-24 px-4 bg-gray-900 min-h-screen flex items-center">
-        <div className="container mx-auto text-center">
-          <motion.h2 
-            className="text-5xl font-bold mb-8"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            Ready to Undress Your Mind?
-          </motion.h2>
-          <motion.p 
-            className="text-2xl mb-12"
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            Join thousands of students already experiencing intellectual ecstasy
-          </motion.p>
-          <motion.div
-            className="flex flex-col items-center"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <StyledButton href="/waitlist" className="text-xl px-12 py-6">
-              Start Your Journey Now
-            </StyledButton>
-            <p className="mt-8 text-gray-400">Still not convinced? Check out our <Link href="/waitlist" className="text-purple-400 hover:text-purple-300 underline">free trial</Link> and experience the Stripteach difference!</p>
-          </motion.div>
         </div>
       </section>
 

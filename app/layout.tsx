@@ -55,7 +55,7 @@ export default function RootLayout({
         <div className={showLogin || showRegister ? 'blur-sm' : ''}>
         <header className="border-b border-gray-800 py-4">
             <nav className="container mx-auto px-4 flex justify-between items-center">
-              <Link href="/" className="text-2xl font-bold hover:text-blue-500 transition duration-300">Stripteach</Link>
+              <Link href="/" className="text-2xl font-bold hover:text-blue-500 transition duration-300">StripTeach</Link>
               <div className="space-x-4 flex items-center">
                 {!session ? (
                   <>
@@ -79,7 +79,7 @@ export default function RootLayout({
           <main>{children}</main>
           <footer className="border-t border-gray-800 py-4 mt-8">
             <div className="container mx-auto px-4 text-center text-gray-400">
-              © 2024 Stripteach, inc. All rights reserved.
+              © 2024 StripTeach, inc. All rights reserved.
             </div>
           </footer>
         </div>
