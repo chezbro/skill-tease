@@ -49,13 +49,17 @@ export default function WaitlistPage() {
           <WaitlistForm />
           
           {/* Priority Access Link */}
-          <div className="mt-8 text-center">
+          <div className="mt-8 text-center relative group">
             <Link href="/priority-access" className="inline-block group">
               <span className="text-lg text-yellow-300 group-hover:text-yellow-100 transition-colors duration-300 border-b-2 border-yellow-300 group-hover:border-yellow-100 pb-1">
                 Get Priority Access for $20
               </span>
               <span className="ml-2 text-yellow-300 group-hover:text-yellow-100 transition-colors duration-300">⚡</span>
             </Link>
+            {/* Tooltip */}
+            <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-gray-800 text-white text-sm rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              Be the first to get access when we launch!
+            </div>
           </div>
         </div>
       </div>

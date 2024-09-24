@@ -53,7 +53,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Explore Our Tantalizing Courses
+            Explore Our Courses
           </motion.h2>
           <div className="flex justify-center">
             <div className="flex gap-8 overflow-x-auto pb-8 max-w-full">
@@ -109,7 +109,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Meet Our Star Teachers
+            Featured Teachers
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             {[
@@ -169,7 +169,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            Featured Courses
+            Popular Courses
           </motion.h2>
           
           {/* Existing Advanced Web Development Course */}
@@ -253,9 +253,9 @@ export default function Home() {
                     Advanced React Patterns
                   </li>
                 </ul>
-                <StyledButton href="/courses/1" className="w-full flex items-center justify-center">
-                  View Full Course Details
-                  <ArrowRight className="ml-2" />
+                <StyledButton className="w-full flex items-center justify-center">
+                  Coming Soon!
+               
                 </StyledButton>
               </div>
             </div>
@@ -342,9 +342,9 @@ export default function Home() {
                     Latin American Literature
                   </li>
                 </ul>
-                <StyledButton href="/courses/2" className="w-full flex items-center justify-center">
-                  View Full Course Details
-                  <ArrowRight className="ml-2" />
+                <StyledButton className="w-full flex items-center justify-center">
+                  Coming Soon!
+               
                 </StyledButton>
               </div>
             </div>
@@ -365,18 +365,18 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
             {[
-              { icon: Book, title: "Personalized Learning", description: "Our AI analyzes your learning style and adapts content to suit your needs.", steps: ["Take a quick assessment", "Receive a tailored curriculum", "Learn at your own pace"] },
-              { icon: Brain, title: "Interactive AI Tutoring", description: "Engage with our advanced AI tutors for real-time support and guidance.", steps: ["Ask questions anytime", "Get instant, detailed explanations", "Practice with AI-generated exercises"] },
-              { icon: Lightbulb, title: "Skill Mastery", description: "Track your progress and master new skills with our comprehensive approach.", steps: ["Set learning goals", "Complete hands-on projects", "Earn verifiable certificates"] }
+              { icon: Book, title: "Tailored Learning Experience", description: "Our AI customizes your learning path based on your unique preferences and goals.", steps: ["Complete a quick assessment", "Get a personalized curriculum", "Learn at your own pace"] },
+              { icon: Brain, title: "Real-Time AI Tutoring", description: "Interact with our intelligent AI tutors for immediate support and guidance.", steps: ["Ask questions anytime", "Receive instant feedback", "Practice with adaptive exercises"] },
+              { icon: Lightbulb, title: "Master New Skills", description: "Track your progress and achieve mastery with our structured approach.", steps: ["Set clear learning objectives", "Engage in hands-on projects", "Earn certificates to showcase your skills"] }
             ].map((item, index) => (
               <motion.div 
                 key={index} 
-                className="relative p-8 bg-gray-800 rounded-lg shadow-xl overflow-hidden"
+                className="relative p-8 bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-transform transform hover:scale-105"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 opacity-10" />
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 opacity-20" />
                 <div className="relative z-10">
                   <div className="bg-purple-700 rounded-full p-4 inline-block mb-6">
                     <item.icon className="w-12 h-12 text-white" />
