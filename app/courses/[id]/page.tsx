@@ -9,6 +9,13 @@ export default function CoursePage() {
   const { id } = useParams()
   const [course, setCourse] = useState<any>(null)
   const [error, setError] = useState<string | null>(null)
+  const [currentLessonIndex, setCurrentLessonIndex] = useState(0)
+  const [quizAnswer, setQuizAnswer] = useState<number | null>(null)
+  const [quizSubmitted, setQuizSubmitted] = useState(false)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [videoError, setVideoError] = useState<string | null>(null)
+  
+  const videoRef = useRef<HTMLVideoElement>(null)
 
   useEffect(() => {
     const fetchCourse = async () => {
