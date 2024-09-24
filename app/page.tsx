@@ -60,7 +60,7 @@ export default function Home() {
               {categories.map((category, index) => (
                 <motion.div 
                   key={index} 
-                  className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl flex-shrink-0 w-80"
+                  className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl flex-shrink-0 w-80 flex flex-col" // Added flex and flex-col
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -80,9 +80,9 @@ export default function Home() {
                       <div className="text-6xl">{category.icon}</div>
                     </div>
                   </div>
-                  <div className="p-6">
+                  <div className="p-6 flex-grow"> 
                     <h3 className="text-2xl font-semibold mb-4">{category.name}</h3>
-                    <p className="text-gray-300 mb-6">Discover the secrets of {category.name.toLowerCase()} with our expert-led courses.</p>
+                    <p className="text-gray-300 mb-6">Discover the secrets of {category.name.toLowerCase()} with our expert courses.</p>
                     <Link href={`/courses/category/${category.name.toLowerCase()}`}>
                       <motion.button 
                         className="bg-purple-600 text-white px-6 py-2 rounded-full hover:bg-purple-700 transition-colors duration-300 w-full"

@@ -1,15 +1,32 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
-import { writeFile } from 'fs/promises'
-import path from 'path'
+import { createClient } from '@supabase/supabase-js'
 
-const prisma = new PrismaClient()
+const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!)
 
 export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const course = await prisma.course.findUnique({
-    where: { id: params.id },
-    include: { lessons: { include: { quiz: true } } }
-  })
+  const { id } = params
+
+  // Fetch course data from Supabase
+  const { data: course, error } = await supabase
+    .from('courses')
+    .select(`
+      *,
+      lessons:lessons(
+        *,
+        quiz:quizzes(*)
+      )
+    `)
+    .eq('id', id)
+    .single()
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
+  if (!course) {
+    return NextResponse.json({ error: 'Course not found' }, { status: 404 })
+  }
+
   return NextResponse.json(course)
 }
 

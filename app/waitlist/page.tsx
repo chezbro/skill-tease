@@ -1,11 +1,23 @@
 import React from 'react'
 import WaitlistForm from '@/components/WaitlistForm'
 import Link from 'next/link'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 
-// You can adjust this value as needed
-const WAITLIST_COUNT = 1501
+const BASE_COUNT = 505
 
-export default function WaitlistPage() {
+async function getWaitlistCount() {
+  const supabase = createServerComponentClient({ cookies })
+  const { count } = await supabase
+    .from('waitlist')
+    .select('*', { count: 'exact', head: true })
+
+  return BASE_COUNT + (count || 0)
+}
+
+export default async function WaitlistPage() {
+  const waitlistCount = await getWaitlistCount()
+
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Full-screen background video */}
@@ -37,16 +49,15 @@ export default function WaitlistPage() {
           <div className="text-center mb-10">
             <p className="text-gray-300 text-sm uppercase tracking-wider mb-2">Current Waitlist</p>
             <div className="inline-flex items-center justify-center">
-              {WAITLIST_COUNT.toString().split('').map((digit, index) => (
+              {waitlistCount.toString().split('').map((digit, index) => (
                 <span key={index} className="bg-white bg-opacity-20 text-white text-2xl font-medium w-8 h-12 flex items-center justify-center rounded">
                   {digit}
                 </span>
               ))}
             </div>
-            
           </div>
           
-          <WaitlistForm />
+          <WaitlistForm initialCount={waitlistCount} baseCount={BASE_COUNT} />
           
           {/* Priority Access Link */}
           <div className="mt-8 text-center relative group">
@@ -60,6 +71,7 @@ export default function WaitlistPage() {
             <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-gray-800 text-white text-sm rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Be the first to get access when we launch!
             </div>
+            
           </div>
         </div>
       </div>
