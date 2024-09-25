@@ -7,7 +7,7 @@ import HeroCarousel from '@/components/HeroCarousel'
 import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle, Star, ThumbsUp, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StyledButton } from '@/components/StyledButton'
-import { createClient } from '@supabase/supabase-js'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import confetti from 'canvas-confetti'
 
 const StarIcon = () => (
@@ -25,10 +25,7 @@ const categories = [
   { name: 'Fitness', icon: '💪' },
 ]
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
-)
+const supabase = createClientComponentClient()
 
 export default function Home() {
   const [isAnnual, setIsAnnual] = useState(true)
@@ -46,6 +43,7 @@ export default function Home() {
   ])
   const [votedCategories, setVotedCategories] = useState<number[]>([])
   const [isVoting, setIsVoting] = useState(false)
+  const [showVoteMessage, setShowVoteMessage] = useState(false)
 
   useEffect(() => {
     fetchVotes()
@@ -93,6 +91,8 @@ export default function Home() {
           spread: 70,
           origin: { y: 0.6 }
         })
+        setShowVoteMessage(true)
+        setTimeout(() => setShowVoteMessage(false), 3000)
       }
     } catch (error) {
       console.error('Error updating vote:', error)
@@ -115,12 +115,11 @@ export default function Home() {
     <div className="min-h-screen">
       <HeroCarousel />
 
-
       {/* Course Categories Banner */}
-      <section className="py-24 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
+      <section className="py-12 md:py-24 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-16 text-center text-white"
+            className="text-4xl md:text-6xl font-bold mb-8 md:mb-16 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -128,11 +127,11 @@ export default function Home() {
             Explore Our Courses
           </motion.h2>
           <div className="flex justify-center">
-            <div className="flex gap-8 overflow-x-auto pb-8 max-w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
               {categories.map((category, index) => (
                 <motion.div 
                   key={index} 
-                  className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl flex-shrink-0 w-80 flex flex-col" // Added flex and flex-col
+                  className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl w-full max-w-sm mx-auto flex flex-col"
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -173,17 +172,17 @@ export default function Home() {
       </section>
 
       {/* Featured Teachers Section */}
-      <section className="py-32 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
+      <section className="py-16 md:py-32 px-4 bg-gradient-to-r from-purple-900 via-indigo-900 to-blue-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center text-white"
+            className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             Featured Teachers
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {[
               { name: "Prof. Allura Spark", image: "/hero-image-4.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
               { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
@@ -233,10 +232,10 @@ export default function Home() {
       </section>
 
       {/* New Course Details Preview Section */}
-      <section className="py-32 px-4 bg-gray-900">
+      <section className="py-16 md:py-32 px-4 bg-gray-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center"
+            className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 text-center"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
@@ -246,7 +245,7 @@ export default function Home() {
           
           {/* Existing Advanced Web Development Course */}
           <motion.div 
-            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-20"
+            className="bg-gray-800 rounded-lg overflow-hidden shadow-2xl mb-10 md:mb-20"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8 }}
@@ -254,7 +253,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Course Video Preview */}
               <div 
-                className="relative h-96 lg:h-auto"
+                className="relative h-64 md:h-96 lg:h-auto"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -285,7 +284,7 @@ export default function Home() {
               </div>
 
               {/* Course Details */}
-              <div className="p-8">
+              <div className="p-6 md:p-8">
                 <h3 className="text-3xl font-bold mb-4 text-white">Advanced Web Development</h3>
                 <p className="text-gray-300 mb-6">Master the latest web technologies and frameworks in this comprehensive course. Suitable for intermediate to advanced developers looking to upgrade their skills.</p>
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -343,7 +342,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Course Video Preview */}
               <div 
-                className="relative h-96 lg:h-auto"
+                className="relative h-64 md:h-96 lg:h-auto"
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -374,7 +373,7 @@ export default function Home() {
               </div>
 
               {/* Course Details */}
-              <div className="p-8">
+              <div className="p-6 md:p-8">
                 <h3 className="text-3xl font-bold mb-4 text-white">Immersive Spanish</h3>
                 <p className="text-gray-300 mb-6">Dive into the rich world of Spanish language and culture. Perfect for beginners and intermediate learners looking to enhance their linguistic skills and cultural understanding.</p>
                 <div className="grid grid-cols-2 gap-4 mb-6">
@@ -425,17 +424,17 @@ export default function Home() {
       </section>
 
       {/* How StripTeach Works section */}
-      <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
+      <section className="py-16 md:py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center text-white"
+            className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             How StripTeach Works
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
             {[
               { icon: Book, title: "Tailored Learning Experience", description: "Our AI customizes your learning path based on your unique preferences and goals.", steps: ["Complete a quick assessment", "Get a personalized curriculum", "Learn at your own pace"] },
               { icon: Brain, title: "Real-Time AI Tutoring", description: "Interact with our intelligent AI tutors for immediate support and guidance.", steps: ["Ask questions anytime", "Receive instant feedback", "Practice with adaptive exercises"] },
@@ -468,13 +467,13 @@ export default function Home() {
             ))}
           </div>
           <motion.div 
-            className="mt-20 text-center"
+            className="mt-12 md:mt-20 text-center"
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <p className="text-2xl text-gray-300 mb-8">Ready to experience the future of learning?</p>
-            <StyledButton href="/waitlist" className="text-xl px-10 py-4">
+            <p className="text-xl md:text-2xl text-gray-300 mb-6 md:mb-8">Ready to experience the future of learning?</p>
+            <StyledButton href="/waitlist" className="text-lg md:text-xl px-8 md:px-10 py-3 md:py-4">
               Join Waitlist
             </StyledButton>
           </motion.div>
@@ -482,17 +481,17 @@ export default function Home() {
       </section>
 
       {/* Testimonials section */}
-      <section className="py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
+      <section className="py-16 md:py-32 px-4 bg-gradient-to-b from-gray-900 to-purple-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center text-white"
+            className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             What Our Students Say
           </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {[
               { name: "Jane D.", role: "Web Developer", quote: "StripTeach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. StripTeach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
               { name: "John S.", role: "Data Scientist", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, StripTeach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
@@ -569,23 +568,23 @@ export default function Home() {
 
 
       {/* Waitlist Pricing Section */}
-      <section id="pricing" className="py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-purple-900 to-gray-900">
+      <section id="pricing" className="py-16 md:py-24 px-4 min-h-screen flex items-center bg-gradient-to-b from-purple-900 to-gray-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-5xl font-bold text-center mb-8"
+            className="text-4xl md:text-5xl font-bold text-center mb-6 md:mb-8"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             Join Our Exclusive Waitlist
           </motion.h2>
-          <p className="text-xl text-center text-gray-300 mb-16">
+          <p className="text-lg md:text-xl text-center text-gray-300 mb-10 md:mb-16">
             Be among the first to experience StripTeach and enjoy special early adopter benefits
           </p>
 
           {/* Waitlist offer */}
           <motion.div 
-            className="bg-gray-800 rounded-lg p-8 shadow-lg max-w-2xl mx-auto"
+            className="bg-gray-800 rounded-lg p-6 md:p-8 shadow-lg max-w-2xl mx-auto"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -621,8 +620,8 @@ export default function Home() {
           </motion.div>
 
           {/* Testimonial */}
-          <div className="mt-16 text-center">
-            <p className="text-xl italic mb-4">
+          <div className="mt-12 md:mt-16 text-center">
+            <p className="text-lg md:text-xl italic mb-4">
               "I joined the waitlist and got early access. The discounted rate was amazing, but the learning experience was priceless!"
             </p>
             <p className="text-purple-400 font-semibold">- Sarah K., Early Adopter</p>
@@ -631,20 +630,20 @@ export default function Home() {
       </section>
 
       {/* Course Voting Section */}
-      <section className="py-32 px-4 bg-gradient-to-b from-purple-900 to-gray-900">
+      <section className="py-16 md:py-32 px-4 bg-gradient-to-b from-purple-900 to-gray-900">
         <div className="container mx-auto">
           <motion.h2 
-            className="text-6xl font-bold mb-20 text-center text-white"
+            className="text-4xl md:text-6xl font-bold mb-10 md:mb-20 text-center text-white"
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
             Shape the Future of Learning
           </motion.h2>
-          <p className="text-xl text-center text-gray-300 mb-12">
+          <p className="text-lg md:text-xl text-center text-gray-300 mb-8 md:mb-12">
             Vote for the course category you'd like to see next on StripTeach!
           </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {courseOptions.map((option) => (
               <motion.div
                 key={option.id}
@@ -684,12 +683,12 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
-          {votedCategories.length > 0 && (
+          {showVoteMessage && (
             <motion.div
               className="mt-12 bg-gradient-to-r from-purple-800 to-purple-600 text-white p-6 rounded-lg shadow-xl"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 1, y: 20 }}
+              animate={{ opacity: 0, y: 0 }}
+              transition={{ duration: 5.35 }}
             >
               <p className="text-center text-xl font-semibold">
                 Thank you for voting! Your input helps shape the future of StripTeach.

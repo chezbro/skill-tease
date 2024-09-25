@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@supabase/auth-helpers-nextjs": "^0.10.0",
-    "@supabase/supabase-js": "^2.45.4",
+    "@supabase/auth-helpers-nextjs": "^0.8.1",
+    "@supabase/auth-helpers-shared": "^0.7.0",
+    "@supabase/supabase-js": "^2.38.0",
     "@types/canvas-confetti": "^1.6.4",
     "canvas-confetti": "^1.9.3",
     "framer-motion": "^11.5.6",
