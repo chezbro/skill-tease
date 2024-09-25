@@ -184,9 +184,9 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {[
-              { name: "Prof. Allura Spark", image: "/hero-image-4.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
-              { name: "Dr. Zephyr Blaze", image: "/hero-image-2.jpg", specialty: "Quantum Computing", rating: 4.8 },
-              { name: "Mx. Nova Frost", image: "/hero-image-3.jpg", specialty: "Cybersecurity", rating: 4.9 }
+              { name: "Prof. Allura Spark", image: "/professor-5.jpg", specialty: "AI & Machine Learning", rating: 4.9 },
+              { name: "Dr. Zephyr Blaze", image: "/professor-3.jpg", specialty: "Quantum Computing", rating: 4.8 },
+              { name: "Mx. Nova Frost", image: "/professor-1.jpg", specialty: "Cybersecurity", rating: 4.9 }
             ].map((teacher, index) => (
               <motion.div 
                 key={index}
@@ -436,19 +436,19 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-16">
             {[
-              { icon: Book, title: "Tailored Learning Experience", description: "Our AI customizes your learning path based on your unique preferences and goals.", steps: ["Complete a quick assessment", "Get a personalized curriculum", "Learn at your own pace"] },
-              { icon: Brain, title: "Real-Time AI Tutoring", description: "Interact with our intelligent AI tutors for immediate support and guidance.", steps: ["Ask questions anytime", "Receive instant feedback", "Practice with adaptive exercises"] },
+              { icon: Book, title: "Tailored Learning Experience", description: "Our tutor customizes your learning path based on your unique preferences and goals.", steps: ["Complete a quick assessment", "Get a personalized curriculum", "Learn at your own pace"] },
+              { icon: Brain, title: "Real-Time Tutoring", description: "Interact with our intelligent tutors for immediate support and guidance.", steps: ["Ask questions anytime", "Receive instant feedback", "Practice with adaptive exercises"] },
               { icon: Lightbulb, title: "Master New Skills", description: "Track your progress and achieve mastery with our structured approach.", steps: ["Set clear learning objectives", "Engage in hands-on projects", "Earn certificates to showcase your skills"] }
             ].map((item, index) => (
               <motion.div 
                 key={index} 
-                className="relative p-8 bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-transform transform hover:scale-105"
+                className="relative p-8 bg-gray-800 rounded-lg shadow-xl overflow-hidden transition-transform transform hover:scale-105 flex flex-col items-center text-center"
                 initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 opacity-20" />
-                <div className="relative z-10">
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-600 to-blue-600 opacity-20 flex items-center justify-center" />
+                <div className="relative z-10 flex flex-col items-center"> {/* Centering icons */}
                   <div className="bg-purple-700 rounded-full p-4 inline-block mb-6">
                     <item.icon className="w-12 h-12 text-white" />
                   </div>
@@ -493,9 +493,9 @@ export default function Home() {
           </motion.h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12">
             {[
-              { name: "Jane D.", role: "Web Developer", quote: "StripTeach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. StripTeach's unique approach has transformed my learning experience. The AI tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
-              { name: "John S.", role: "Data Scientist", quote: "The AI tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, StripTeach was a game-changer. The AI tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
-              { name: "Emily R.", role: "UX Designer", quote: "StripTeach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "StripTeach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the AI tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
+              { name: "Jane D.", role: "Web Developer", quote: "StripTeach made learning so exciting, I couldn't keep my hands off my keyboard!", longQuote: "I never thought I'd be this passionate about coding. StripTeach's unique approach has transformed my learning experience. The tutor feels like a personal mentor, always there to guide me through complex concepts. Now, I'm building projects I never thought I could!" },
+              { name: "John S.", role: "Data Scientist", quote: "The tutor whispered sweet algorithms in my ear. Now I'm a coding Casanova!", longQuote: "As someone who struggled with traditional learning methods, StripTeach was a game-changer. The tutor adapted to my learning style, making even the most complex algorithms feel intuitive. I've gone from a coding novice to leading projects at work in just a few months!" },
+              { name: "Emily R.", role: "UX Designer", quote: "StripTeach turned my brain on. Now I'm having intellectual affairs with new ideas daily!", longQuote: "StripTeach has ignited a passion for learning I never knew I had. The courses are engaging, challenging, and incredibly rewarding. I find myself exploring new topics every day, and the tutor is always there to support my curiosity. It's like having a brilliant study partner available 24/7!" }
             ].map((testimonial, index) => (
               <motion.div 
                 key={index} 
