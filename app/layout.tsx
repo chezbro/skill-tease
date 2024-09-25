@@ -8,6 +8,7 @@ import { supabase } from '@/lib/supabase'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
 import "./globals.css"
+import BackToTop from '@/components/BackToTop'
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -97,6 +98,7 @@ export default function RootLayout({
           </div>
         </div>
       )}
+      <BackToTop />
     </body>
     </html>
   )
