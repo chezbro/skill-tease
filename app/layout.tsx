@@ -10,6 +10,7 @@ import Register from '@/components/Register'
 import "./globals.css"
 import BackToTop from '@/components/BackToTop'
 import { Anton } from "next/font/google"  // Add this import
+import Confetti from 'react-confetti'  // Add this import
 
 const anton = Anton({
   weight: '400',
@@ -29,6 +30,7 @@ export default function RootLayout({
   const [session, setSession] = useState<Session | null>(null)  // Update this line
   const [showLogin, setShowLogin] = useState(false)
   const [showRegister, setShowRegister] = useState(false)
+  const [showConfetti, setShowConfetti] = useState(false)  // Add this line
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
@@ -56,16 +58,22 @@ export default function RootLayout({
     setShowRegister(false)
   }
 
+  const handleLogoClick = () => {
+    setShowConfetti(true)
+    setTimeout(() => setShowConfetti(false), 3000)  // Hide confetti after 3 seconds
+  }
+
   return (
     <html lang="en">
       <body className={`${inter.className} bg-black text-white`}>
+        {showConfetti && <Confetti />}
         <div className={showLogin || showRegister ? 'blur-sm' : ''}>
         <header className="border-b border-gray-800 py-2 sm:py-4">
           <nav className="container mx-auto px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center">
-            <Link href="/" className="text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
+            <Link href="/" className="text-xl sm:text-2xl font-bold mb-2 sm:mb-0" onClick={handleLogoClick}>
               <span className="relative group">
                 {['S', 'T', 'R', 'I', 'P', 'T', 'E', 'A', 'C', 'H'].map((letter, index) => (
-                  <span key={index} className={`${anton.className} text-4xl transition duration-300 text-white group-hover:text-purple-500`} style={{ textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5), 4px 4px 0 rgba(0, 0, 0, 0.3)' }}>
+                  <span key={index} className={`${anton.className} text-3xl transition duration-300 text-white group-hover:text-purple-500`} style={{ textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5), 4px 4px 0 rgba(0, 0, 0, 0.3)' }}>
                     {letter}
                   </span>
                 ))}
