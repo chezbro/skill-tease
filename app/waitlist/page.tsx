@@ -80,7 +80,7 @@ export default function WaitlistPage() {
           <div className="mt-8 text-center relative group">
             {connected ? (
               <SolanaPayButton
-                amount={20}
+                amount={.05}
                 recipient="FdweEV5PGTbSs8rrrfbN5vtwxtuUHoratkZvkn6QcXYF"
                 label="Priority Access"
                 message="Thank you for purchasing priority access!"
