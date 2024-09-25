@@ -80,7 +80,7 @@ export default function WaitlistPage() {
           <div className="mt-8 text-center relative group">
             {connected ? (
               <SolanaPayButton
-                amount={.05}
+                amount={.0001}
                 recipient="FdweEV5PGTbSs8rrrfbN5vtwxtuUHoratkZvkn6QcXYF"
                 label="Priority Access"
                 message="Thank you for purchasing priority access!"
@@ -88,7 +88,7 @@ export default function WaitlistPage() {
               />
             ) : (
               <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-700">
-                Connect Wallet to Get Priority Access
+                Pay with Solana to Get Priority Access
               </WalletMultiButton>
             )}
             {/* Tooltip */}
