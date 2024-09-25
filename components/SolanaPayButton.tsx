@@ -56,7 +56,7 @@ const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ amount, recipient, la
       className="inline-block group"
     >
       <span className="text-lg text-yellow-300 group-hover:text-yellow-100 transition-colors duration-300 border-b-2 border-yellow-300 group-hover:border-yellow-100 pb-1">
-        {isLoading ? 'Processing...' : `Get Priority Access for $${amount}`}
+        {isLoading ? 'Processing...' : `Get Priority Access for ${amount} SOL`}
       </span>
       <span className="ml-2 text-yellow-300 group-hover:text-yellow-100 transition-colors duration-300">⚡</span>
     </button>
