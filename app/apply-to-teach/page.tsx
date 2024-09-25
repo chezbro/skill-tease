@@ -200,7 +200,7 @@ export default function ApplyToTeach() {
         <div className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white mb-4">
-              Become a StripTeach Instructor
+              Become a StripTeacher
             </h1>
             <p className="text-xl md:text-2xl text-gray-300 max-w-2xl mx-auto">
               Share your expertise, inspire students, and build a rewarding career

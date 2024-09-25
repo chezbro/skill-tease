@@ -9,6 +9,12 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import "./globals.css"
 import BackToTop from '@/components/BackToTop'
+import { Anton } from "next/font/google"  // Add this import
+
+const anton = Anton({
+  weight: '400',
+  preload: false,
+})  // Add this line
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -56,7 +62,15 @@ export default function RootLayout({
         <div className={showLogin || showRegister ? 'blur-sm' : ''}>
         <header className="border-b border-gray-800 py-2 sm:py-4">
           <nav className="container mx-auto px-2 sm:px-4 flex flex-col sm:flex-row justify-between items-center">
-            <Link href="/" className="text-xl sm:text-2xl font-bold hover:text-blue-500 transition duration-300 mb-2 sm:mb-0">StripTeach</Link>
+            <Link href="/" className="text-xl sm:text-2xl font-bold mb-2 sm:mb-0">
+              <span className="relative group">
+                {['S', 'T', 'R', 'I', 'P', 'T', 'E', 'A', 'C', 'H'].map((letter, index) => (
+                  <span key={index} className={`${anton.className} text-4xl transition duration-300 text-white group-hover:text-purple-500`} style={{ textShadow: '2px 2px 0 rgba(0, 0, 0, 0.5), 4px 4px 0 rgba(0, 0, 0, 0.3)' }}>
+                    {letter}
+                  </span>
+                ))}
+              </span>
+            </Link>
             <div className="flex flex-wrap justify-center sm:justify-end items-center gap-2 sm:gap-4">
               {!session ? (
                 <>
