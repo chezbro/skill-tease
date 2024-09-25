@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@solana/pay": "^0.2.5",
+    "@solana/wallet-adapter-base": "^0.9.23",
+    "@solana/wallet-adapter-react": "^0.15.35",
+    "@solana/wallet-adapter-react-ui": "^0.9.35",
+    "@solana/wallet-adapter-wallets": "^0.19.32",
     "@solana/web3.js": "^1.95.3",
     "@supabase/auth-helpers-nextjs": "^0.8.1",
     "@supabase/auth-helpers-shared": "^0.7.0",
@@ -20,6 +24,7 @@
     "framer-motion": "^11.5.6",
     "lucide-react": "^0.445.0",
     "next": "^14.2.13",
+    "pino-pretty": "^11.2.2",
     "react": "^18",
     "react-confetti": "^6.1.0",
     "react-dom": "^18",

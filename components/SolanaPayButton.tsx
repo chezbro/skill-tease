@@ -4,12 +4,11 @@ import { PublicKey, LAMPORTS_PER_SOL } from '@solana/web3.js';
 import BigNumber from 'bignumber.js';
 
 interface SolanaPayButtonProps {
-  recipient: string;
   label: string;
   message: string;
 }
 
-const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ recipient, label, message }) => {
+const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ label, message }) => {
   const [showModal, setShowModal] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
 
@@ -20,7 +19,7 @@ const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ recipient, label, mes
   useEffect(() => {
     if (showModal && qrRef.current) {
       const urlParams: TransactionRequestURLFields = {
-        recipient: new PublicKey(recipient),
+        recipient: new PublicKey('FdweEV5PGTbSs8rrrfbN5vtwxtuUHoratkZvkn6QcXYF'),
         splToken: new PublicKey('EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v'), // USDC SPL token address
         amount: new BigNumber(20), // $20 USDC
         label,
@@ -33,7 +32,7 @@ const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ recipient, label, mes
       qrRef.current.innerHTML = '';
       qr.append(qrRef.current);
     }
-  }, [showModal, recipient, label, message]);
+  }, [showModal, label, message]);
 
   return (
     <>
