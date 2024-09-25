@@ -70,6 +70,16 @@ const SolanaPayButton: React.FC<SolanaPayButtonProps> = ({ recipient, label, mes
               </button>
               <span className="text-yellow-400 font-semibold">$20 USDC</span>
             </div>
+            <div className="mt-4 text-center">
+              <a
+                href="https://explorer.solana.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                Check payment status on Solana Explorer
+              </a>
+            </div>
           </div>
         </div>
       )}
