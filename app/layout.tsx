@@ -11,7 +11,7 @@ import "./globals.css"
 import BackToTop from '@/components/BackToTop'
 import { Anton } from "next/font/google"  // Add this import
 import Confetti from 'react-confetti'  // Add this import
-import { WalletContextProvider } from '@/components/WalletContextProvider'
+import { WalletContextProvider } from '../components/WalletContextProvider'
 import { WalletConnection } from '@/components/WalletConnection'
 
 const anton = Anton({

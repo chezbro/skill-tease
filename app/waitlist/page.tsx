@@ -5,12 +5,16 @@ import WaitlistForm from '@/components/WaitlistForm'
 import ConfettiOverlay from '@/components/ConfettiOverlay'
 import SolanaPayButton from '@/components/SolanaPayButton'
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { useWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const BASE_COUNT = 505
 
 export default function WaitlistPage() {
   const [waitlistCount, setWaitlistCount] = useState(BASE_COUNT)
   const [showConfetti, setShowConfetti] = useState(false)
+  const { connected } = useWallet();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const supabase = createClientComponentClient()
 
@@ -18,6 +22,11 @@ export default function WaitlistPage() {
     setWaitlistCount(prevCount => prevCount + 1)
     setShowConfetti(true)
   }
+
+  const handlePaymentSuccess = () => {
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 5000);
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -69,17 +78,30 @@ export default function WaitlistPage() {
           
           {/* Priority Access with Solana Pay */}
           <div className="mt-8 text-center relative group">
-            <SolanaPayButton
-              amount={20}
-              recipient="FdweEV5PGTbSs8rrrfbN5vtwxtuUHoratkZvkn6QcXYF"
-              label="Priority Access"
-              message="Thank you for purchasing priority access!"
-            />
+            {connected ? (
+              <SolanaPayButton
+                amount={20}
+                recipient="FdweEV5PGTbSs8rrrfbN5vtwxtuUHoratkZvkn6QcXYF"
+                label="Priority Access"
+                message="Thank you for purchasing priority access!"
+                onSuccess={handlePaymentSuccess}
+              />
+            ) : (
+              <WalletMultiButton className="!bg-purple-600 hover:!bg-purple-700">
+                Connect Wallet to Get Priority Access
+              </WalletMultiButton>
+            )}
             {/* Tooltip */}
             <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-gray-800 text-white text-sm rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Be the first to get access when we launch!
             </div>
           </div>
+
+          {showSuccessMessage && (
+            <div className="mt-4 p-2 bg-green-500 text-white rounded">
+              Payment successful! You now have priority access.
+            </div>
+          )}
         </div>
       </div>
     </div>
