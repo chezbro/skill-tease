@@ -1,26 +1,30 @@
 import { NextResponse } from 'next/server'
-import { PrismaClient } from '@prisma/client'
+import { createClient } from '@supabase/supabase-js'
 
-const prisma = new PrismaClient()
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!)
 
 export async function GET() {
-  const courses = await prisma.course.findMany()
+  const { data: courses, error } = await supabase
+    .from('courses')
+    .select('*')
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
   return NextResponse.json(courses)
 }
 
 export async function POST(request: Request) {
   const data = await request.json()
-  const course = await prisma.course.create({
-    data: {
-      ...data,
-      lessons: {
-        create: data.lessons.map((lesson: any) => ({
-          ...lesson,
-          quiz: lesson.quiz ? { create: lesson.quiz } : undefined
-        }))
-      }
-    },
-    include: { lessons: { include: { quiz: true } } }
-  })
+  const { data: course, error } = await supabase
+    .from('courses')
+    .insert(data)
+    .select()
+
+  if (error) {
+    return NextResponse.json({ error: error.message }, { status: 500 })
+  }
+
   return NextResponse.json(course)
 }

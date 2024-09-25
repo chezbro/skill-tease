@@ -9,7 +9,7 @@ const supabase = createClient(
 
 // Define the Course type
 type Course = {
-  id: number
+  id: string
   title: string
   category: string
 }
@@ -17,10 +17,11 @@ type Course = {
 // Make the component async
 export default async function CoursesPage() {
   try {
-    // Fetch courses from Supabase
+    // Fetch all courses from Supabase
     const { data: courses, error } = await supabase
       .from('courses')
       .select('id, title, category')
+      .order('title') // Optional: Order courses by title
 
     // Handle potential error
     if (error) {
@@ -31,6 +32,7 @@ export default async function CoursesPage() {
     return (
       <div className="container mx-auto px-4 py-12">
         <h1 className="text-4xl font-bold mb-8">Explore Courses</h1>
+        <p className="mb-4">Total courses: {courses.length}</p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {courses.map((course: Course) => (
             <Link href={`/courses/${course.id}`} key={course.id} className="bg-gray-900 p-6 rounded-lg hover:bg-gray-800 transition duration-300 hover:shadow-neon-purple">

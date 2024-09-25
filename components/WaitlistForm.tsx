@@ -1,20 +1,19 @@
 'use client'
 
 import React, { useState } from 'react'
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
+import { SupabaseClient } from '@supabase/supabase-js'
 
 interface WaitlistFormProps {
   initialCount: number
   baseCount: number
+  supabase: SupabaseClient
+  onSuccessfulSubmission: () => void
 }
 
-export default function WaitlistForm({ initialCount, baseCount }: WaitlistFormProps) {
+export default function WaitlistForm({ initialCount, baseCount, supabase, onSuccessfulSubmission }: WaitlistFormProps) {
   const [email, setEmail] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState('')
-  const [count, setCount] = useState(initialCount)
-
-  const supabase = createClientComponentClient()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,7 +29,7 @@ export default function WaitlistForm({ initialCount, baseCount }: WaitlistFormPr
 
       setEmail('')
       setMessage('Thank you for joining our waitlist!')
-      setCount(prevCount => prevCount + 1)
+      onSuccessfulSubmission()
     } catch (error) {
       setMessage('An error occurred. Please try again.')
     } finally {

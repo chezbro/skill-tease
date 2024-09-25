@@ -1,12 +1,14 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import HeroCarousel from '@/components/HeroCarousel'
-import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle, Star } from 'lucide-react'
+import { ArrowRight, Book, Brain, Lightbulb, Zap, PlayCircle, CheckCircle, Star, ThumbsUp, Sparkles } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { StyledButton } from '@/components/StyledButton'
+import { createClient } from '@supabase/supabase-js'
+import confetti from 'canvas-confetti'
 
 const StarIcon = () => (
   <svg className="h-4 w-4 text-yellow-500 fill-current" viewBox="0 0 20 20">
@@ -23,11 +25,81 @@ const categories = [
   { name: 'Fitness', icon: '💪' },
 ]
 
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+)
+
 export default function Home() {
   const [isAnnual, setIsAnnual] = useState(true)
   const [expandedReview, setExpandedReview] = useState<number | null>(null)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+
+  const [courseOptions, setCourseOptions] = useState([
+    { id: 1, name: 'Languages', votes: 0 },
+    { id: 2, name: 'Math', votes: 0 },
+    { id: 3, name: 'Science', votes: 0 },
+    { id: 4, name: 'Programming', votes: 0 },
+    { id: 5, name: 'Marketing', votes: 0 },
+    { id: 6, name: 'Business', votes: 0 },
+  ])
+  const [votedCategories, setVotedCategories] = useState<number[]>([])
+  const [isVoting, setIsVoting] = useState(false)
+
+  useEffect(() => {
+    fetchVotes()
+  }, [])
+
+  const fetchVotes = async () => {
+    const { data, error } = await supabase
+      .from('course_votes')
+      .select('id, name, votes')
+    
+    if (data) {
+      setCourseOptions(data)
+    } else if (error) {
+      console.error('Error fetching votes:', error)
+    }
+  }
+
+  const handleVote = async (id: number) => {
+    if (votedCategories.includes(id) || isVoting) return
+
+    setIsVoting(true)
+    try {
+      const { data: incrementedData, error: incrementError } = await supabase
+        .rpc('increment_votes', { row_id: id })
+
+      if (incrementError) throw incrementError
+
+      const { data: updatedData, error: fetchError } = await supabase
+        .from('course_votes')
+        .select('id, name, votes')
+        .eq('id', id)
+        .single()
+
+      if (fetchError) throw fetchError
+
+      if (updatedData) {
+        setCourseOptions(prevOptions =>
+          prevOptions.map(option =>
+            option.id === id ? { ...option, votes: updatedData.votes } : option
+          )
+        )
+        setVotedCategories(prev => [...prev, id])
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      }
+    } catch (error) {
+      console.error('Error updating vote:', error)
+    } finally {
+      setIsVoting(false)
+    }
+  }
 
   const handleMouseEnter = () => {
     setIsVideoPlaying(true)
@@ -558,6 +630,77 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Course Voting Section */}
+      <section className="py-32 px-4 bg-gradient-to-b from-purple-900 to-gray-900">
+        <div className="container mx-auto">
+          <motion.h2 
+            className="text-6xl font-bold mb-20 text-center text-white"
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
+            Shape the Future of Learning
+          </motion.h2>
+          <p className="text-xl text-center text-gray-300 mb-12">
+            Vote for the course category you'd like to see next on StripTeach!
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {courseOptions.map((option) => (
+              <motion.div
+                key={option.id}
+                className="bg-gray-800 rounded-lg overflow-hidden shadow-xl"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="relative h-48">
+                  <Image 
+                    src={`https://picsum.photos/seed/${option.name}/800/400`}
+                    alt={option.name}
+                    layout="fill"
+                    objectFit="cover"
+                    className="brightness-50"
+                  />
+                  <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                    <h3 className="text-3xl font-bold text-white text-center">{option.name}</h3>
+                  </div>
+                </div>
+                <div className="p-6">
+                  <p className="text-purple-400 mb-4 text-lg flex items-center justify-center">
+                    <Sparkles className="mr-2" />
+                    {option.votes} votes
+                  </p>
+                  <motion.button
+                    className={`w-full bg-purple-600 text-white px-6 py-3 rounded-full hover:bg-purple-700 transition-colors duration-300 flex items-center justify-center ${votedCategories.includes(option.id) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleVote(option.id)}
+                    disabled={votedCategories.includes(option.id) || isVoting}
+                  >
+                    <ThumbsUp className="mr-2" />
+                    {votedCategories.includes(option.id) ? 'Voted' : `Vote for ${option.name}`}
+                  </motion.button>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          {votedCategories.length > 0 && (
+            <motion.div
+              className="mt-12 bg-gradient-to-r from-purple-800 to-purple-600 text-white p-6 rounded-lg shadow-xl"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <p className="text-center text-xl font-semibold">
+                Thank you for voting! Your input helps shape the future of StripTeach.
+              </p>
+              <p className="text-center mt-2">
+                You've voted for {votedCategories.length} {votedCategories.length === 1 ? 'category' : 'categories'}. Feel free to vote for more!
+              </p>
+            </motion.div>
+          )}
+        </div>
+      </section>
 
     </div>
   )

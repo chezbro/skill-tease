@@ -1,25 +1,28 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import WaitlistForm from '@/components/WaitlistForm'
+import ConfettiOverlay from '@/components/ConfettiOverlay'
 import Link from 'next/link'
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
-import { cookies } from 'next/headers'
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 
 const BASE_COUNT = 505
 
-async function getWaitlistCount() {
-  const supabase = createServerComponentClient({ cookies })
-  const { count } = await supabase
-    .from('waitlist')
-    .select('*', { count: 'exact', head: true })
+export default function WaitlistPage() {
+  const [waitlistCount, setWaitlistCount] = useState(BASE_COUNT)
+  const [showConfetti, setShowConfetti] = useState(false)
 
-  return BASE_COUNT + (count || 0)
-}
+  const supabase = createClientComponentClient()
 
-export default async function WaitlistPage() {
-  const waitlistCount = await getWaitlistCount()
+  const handleSuccessfulSubmission = () => {
+    setWaitlistCount(prevCount => prevCount + 1)
+    setShowConfetti(true)
+  }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <ConfettiOverlay show={showConfetti} onComplete={() => setShowConfetti(false)} />
+
       {/* Full-screen background video */}
       <video
         className="absolute top-0 left-0 w-full h-full object-cover"
@@ -57,7 +60,12 @@ export default async function WaitlistPage() {
             </div>
           </div>
           
-          <WaitlistForm initialCount={waitlistCount} baseCount={BASE_COUNT} />
+          <WaitlistForm 
+            initialCount={waitlistCount} 
+            baseCount={BASE_COUNT} 
+            supabase={supabase}
+            onSuccessfulSubmission={handleSuccessfulSubmission}
+          />
           
           {/* Priority Access Link */}
           <div className="mt-8 text-center relative group">
@@ -71,7 +79,6 @@ export default async function WaitlistPage() {
             <div className="absolute left-1/2 transform -translate-x-1/2 mt-2 w-48 bg-gray-800 text-white text-sm rounded p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
               Be the first to get access when we launch!
             </div>
-            
           </div>
         </div>
       </div>
